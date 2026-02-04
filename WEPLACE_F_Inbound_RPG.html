@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WEPLACE : Inbound RPG (F)</title>
+  
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #111;
+      --text: #e5e5e5;
+      --muted: #666;
+      
+      --gold: #2d5bff;
+      --gold-dim: rgba(45, 91, 255, 0.22);
+      --gold-glow: rgba(45, 91, 255, 0.62);
+      
+      --font-main: "Pretendard", sans-serif;
+      --font-serif: "Playfair Display", serif;
+      --font-code: "JetBrains Mono", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    .container {
+      max-width: 480px; margin: 0 auto; padding: 20px;
+      flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+      position: relative;
+      width: 100%; /* Mobile full width */
+    }
+
+    /* --- GAME HUD (Header) --- */
+    .hud {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(5,5,5,0.95);
+      backdrop-filter: blur(10px);
+      padding: 10px 0 15px;
+      border-bottom: 1px solid #222;
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+    }
+    
+    .hud-stat {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      padding-left: 10px;
+    }
+    
+    canvas#radarChart {
+      width: 80px; height: 80px; /* Adjusted for mobile header */
+      filter: drop-shadow(0 0 8px var(--gold-dim));
+    }
+
+    .hud-info {
+      text-align: right;
+      font-family: var(--font-code);
+      font-size: 0.7rem; color: var(--gold);
+      padding-right: 10px;
+    }
+
+    /* --- SECTIONS --- */
+    .screen { display: none; opacity: 0; transition: opacity 0.5s; width: 100%; }
+    .screen.active { display: block; opacity: 1; }
+
+    /* 1. INTRO */
+    .intro-box {
+      text-align: center; margin-top: 20px; /* Reduced margin */
+      border: 1px solid var(--gold-dim);
+      padding: 30px 20px;
+      background: radial-gradient(circle, rgba(45,91,255,0.10) 0%, transparent 70%);
+      border-radius: 8px; /* Softer edges */
+    }
+    .intro-logo { font-family: var(--font-serif); letter-spacing: 3px; color: var(--gold); margin-bottom: 20px; font-weight: 700; font-size: 0.9rem; }
+    h1 { font-family: var(--font-serif); font-size: 2rem; line-height: 1.1; margin-bottom: 15px; } /* Mobile font size */
+    
+    .glitch-btn {
+      margin-top: 30px;
+      background: var(--gold); color: #000;
+      border: none; padding: 16px 0; width: 100%; /* Full width button */
+      font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+      cursor: pointer; position: relative; overflow: hidden;
+      clip-path: polygon(5% 0, 100% 0, 100% 80%, 95% 100%, 0 100%, 0 20%); /* Adjusted clip-path */
+      transition: 0.2s;
+    }
+    .glitch-btn:active { transform: scale(0.98); }
+
+    /* 2. GAME CARDS */
+    .card-stack { position: relative; margin-top: 20px; min-height: 450px; /* Ensure height for mobile */ }
+    
+    .q-card {
+      background: #111; border: 1px solid #333;
+      padding: 25px 20px; border-radius: 8px; /* Mobile padding */
+      position: absolute; top: 0; left: 0; width: 100%;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
+      opacity: 0; pointer-events: none; transform: translateY(50px) scale(0.95);
+      border-top: 3px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Depth */
+    }
+    .q-card.current { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); z-index: 10; }
+    .q-card.prev { opacity: 0; transform: translateY(-50px) scale(1.05); z-index: 0; }
+
+    .step-tag {
+      font-family: var(--font-code); font-size: 0.65rem; color: var(--gold);
+      border: 1px solid var(--gold-dim); padding: 4px 8px; display: inline-block; margin-bottom: 15px;
+    }
+    
+    .q-text { font-size: 1.1rem; font-weight: 700; line-height: 1.4; color: #fff; margin-bottom: 25px; min-height: 50px; }
+
+    /* SLIDER GAMIFICATION */
+    .slider-container { position: relative; margin: 30px 0; }
+    
+    input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; z-index: 2; position: relative; padding: 10px 0; /* Touch area */ }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; height: 30px; width: 30px; /* Larger thumb */
+      background: #000; border: 2px solid var(--gold);
+      transform: rotate(45deg); margin-top: -13px; cursor: pointer;
+      box-shadow: 0 0 15px var(--gold);
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%; height: 4px; background: #333; border-radius: 2px;
+    }
+
+    .feedback-text {
+      text-align: center; font-family: var(--font-serif);
+      font-size: 1.4rem; color: var(--gold); margin-bottom: 15px;
+      height: 30px; transition: 0.2s; text-shadow: 0 0 10px var(--gold-dim);
+    }
+
+    /* 3. RESULT BLUEPRINT */
+    .blueprint {
+      background: #0d0d0d; border: 1px solid var(--gold-dim);
+      padding: 25px 20px; position: relative; overflow: hidden;
+      box-shadow: 0 0 50px rgba(0,0,0,0.8);
+      border-radius: 8px;
+    }
+    .blueprint::before { /* Grid Pattern */
+      content: ""; position: absolute; inset: 0;
+      background-image: linear-gradient(#222 1px, transparent 1px), linear-gradient(90deg, #222 1px, transparent 1px);
+      background-size: 20px 20px; opacity: 0.3; pointer-events: none;
+    }
+
+    .char-stat {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #333; padding: 15px 0;
+    }
+    .char-rank { font-family: var(--font-serif); font-size: 2.8rem; color: #fff; line-height: 1; }
+    .char-title { font-family: var(--font-code); color: var(--gold); font-size: 0.8rem; letter-spacing: 1px; }
+
+    .rec-box {
+      margin-top: 25px; border: 1px solid #333; padding: 20px;
+      background: rgba(176,141,85,0.05); position: relative; z-index: 2; border-radius: 6px;
+    }
+    .rec-head { font-size: 0.65rem; color: #888; margin-bottom: 10px; letter-spacing: 2px; }
+    .rec-main { font-size: 1.05rem; color: #fff; font-weight: 700; margin-bottom: 5px; line-height: 1.4; }
+    .rec-sub { font-size: 0.85rem; color: #aaa; }
+
+    /* ACTION BUTTONS */
+    .btn-next {
+      width: 100%; padding: 16px; background: #222; border: 1px solid #444; color: #fff;
+      font-weight: 700; cursor: pointer; margin-top: 20px; transition: 0.2s; font-size: 0.9rem;
+    }
+    .btn-next:hover { border-color: var(--gold); color: var(--gold); }
+    
+    .btn-gold {
+      width: 100%; padding: 16px; background: var(--gold); color: #000; border: none;
+      font-weight: 800; cursor: pointer; margin-top: 15px; position: relative; z-index: 2; font-size: 0.95rem;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div id="screen-intro" class="screen active">
+      <div class="intro-box">
+        <div class="intro-logo">WEPLACE SYSTEM</div>
+        <h1>INBOUND<br>BLUEPRINT</h1>
+        <p style="color:#888; font-size:0.9rem; line-height:1.6; margin: 20px 0;">          당신의 매출은 '우연'입니까,<br>아니면 '구조'입니까?<br><br>
+          7가지 스탯(Stat)으로<br>플랫폼/전환/신뢰/운영을 진단해<br>
+          최적의 <b>인바운드 청사진</b>을 생성합니다.
+        </p>
+        <button class="glitch-btn" onclick="startGame()">진단 시작</button>
+      </div>
+    </div>
+
+    <div id="screen-game" class="screen">
+      
+      <div class="hud">
+        <div class="hud-stat">
+          <canvas id="radarChart"></canvas>
+        </div>
+        <div class="hud-info">
+          <div style="font-size:0.7rem; color:#666;">INBOUND SCORE</div>
+          <div style="font-size:1.4rem; font-weight:700; color:#fff;" id="totalScore">0%</div>
+        </div>
+      </div>
+
+      <div class="card-stack">
+        
+        <div class="q-card current" id="card-1">
+          <span class="step-tag">PHASE 1. PLATFORM</span>
+          <div class="q-text">Q1. 고객이 플레이스/홈페이지를 3초만 봐도, ‘신뢰’가 전달됩니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-1">Neutral</div>
+            <input type="range" id="q1" min="0" max="100" value="50" oninput="handleInput(1, this.value)">
+          </div>
+          <button class="btn-next" onclick="nextCard(1)">점수 확정</button>
+        </div>
+
+        <div class="q-card" id="card-2">
+          <span class="step-tag">PHASE 1. PLATFORM</span>
+          <div class="q-text">Q2. 대표 상품(서비스)과 가격/혜택이 한 번에 ‘명확’하게 이해됩니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-2">Neutral</div>
+            <input type="range" id="q2" min="0" max="100" value="50" oninput="handleInput(2, this.value)">
+          </div>
+          <button class="btn-next" onclick="nextCard(2)">점수 확정</button>
+        </div>
+
+        <div class="q-card" id="card-3">
+          <span class="step-tag">PHASE 2. CONVERSION</span>
+          <div class="q-text">Q3. 클릭→문의→예약까지 동선이 매끄럽게 ‘전환’되도록 설계돼 있습니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-3">Neutral</div>
+            <input type="range" id="q3" min="0" max="100" value="50" oninput="handleInput(3, this.value)">
+          </div>
+          <button class="btn-next" onclick="nextCard(3)">점수 확정</button>
+        </div>
+
+        <div class="q-card" id="card-4">
+          <span class="step-tag">PHASE 3. TRUST</span>
+          <div class="q-text">Q4. 후기/사진/소식/FAQ가 ‘증거’로 쌓여 있어 의심이 줄어듭니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-4">Neutral</div>
+            <input type="range" id="q4" min="0" max="100" value="50" oninput="handleInput(4, this.value)">
+          </div>
+          <button class="btn-next" onclick="nextCard(4)">점수 확정</button>
+        </div>
+
+        <div class="q-card" id="card-5">
+          <span class="step-tag">PHASE 3. TRUST</span>
+          <div class="q-text">Q5. 콘텐츠/리뷰/키워드 업데이트가 ‘루틴’으로 고정돼 있습니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-5">Neutral</div>
+            <input type="range" id="q5" min="0" max="100" value="50" oninput="handleInput(5, this.value)">
+          </div>
+          <button class="btn-next" onclick="nextCard(5)">점수 확정</button>
+        </div>
+
+        <div class="q-card" id="card-6">
+          <span class="step-tag">PHASE 4. OPERATIONS</span>
+          <div class="q-text">Q6. 패키지(업셀) 구조가 있어 고객이 더 큰 선택을 자연스럽게 하게 됩니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-6">Neutral</div>
+            <input type="range" id="q6" min="0" max="100" value="50" oninput="handleInput(6, this.value)">
+          </div>
+          <button class="btn-next" onclick="nextCard(6)">점수 확정</button>
+        </div>
+
+        <div class="q-card" id="card-7">
+          <span class="step-tag">PHASE 4. OPERATIONS</span>
+          <div class="q-text">Q7. 문의가 들어오면 ‘응답 속도’와 ‘스크립트’로 결정을 끌어낼 수 있습니까?</div>
+          
+          <div class="slider-container">
+            <div class="feedback-text" id="fb-7">Neutral</div>
+            <input type="range" id="q7" min="0" max="100" value="50" oninput="handleInput(7, this.value)">
+          </div>
+          <button class="btn-gold" onclick="finishGame()">INBOUND 청사진 생성</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="screen-result" class="screen">
+      <div style="text-align:center; margin-bottom:20px;">
+        <span style="font-family:var(--font-code); color:var(--muted); font-size:0.7rem; letter-spacing:1px;">WEPLACE AUDIT COMPLETE</span>
+      </div>
+
+      <div class="blueprint">
+        <div class="char-stat">
+          <div>
+            <div class="char-title">BUSINESS TYPE</div>
+            <h2 style="color:#fff; margin:5px 0 0; font-size:1.3rem;" id="res-type">LOADING...</h2>
+          </div>
+          <div class="char-rank" id="res-score">B+</div>
+        </div>
+
+        <div style="margin-top:20px; font-size:0.9rem; color:#ccc; line-height:1.6;" id="res-desc">
+          데이터 분석 중...
+        </div>
+
+        <div class="rec-box">
+          <div class="rec-head">STRATEGIC UPGRADE</div>
+          <div class="rec-main" id="rec-main">Solution Loading...</div>
+          <div class="rec-sub" id="rec-sub">...</div>
+        </div>
+
+        <button class="btn-gold" onclick="copyInquiry()">문의 텍스트 복사</button>
+        <button class="btn-next" onclick="location.reload()">다시 진단</button>
+      </div>
+    </div>
+
+  </div>
+
+  <textarea id="copyBox" style="position:absolute; left:-9999px;"></textarea>
+
+  <script>
+    // --- GAMIFICATION LOGIC ---
+    let scores = [50, 50, 50, 50, 50, 50, 50]; // Q1~Q7
+    const labels = [
+      ["안 보임", "불신", "무난", "신뢰", "즉결정"], // Q1
+      ["혼란", "흐릿", "보통", "명확", "한방"], // Q2
+      ["헤맴", "불편", "보통", "매끈", "자동전환"], // Q3
+      ["0증거", "부족", "보통", "탄탄", "압도"], // Q4
+      ["무루틴", "가끔", "보통", "꾸준", "시스템"], // Q5
+      ["팔기어려움", "애매", "보통", "선명", "업셀"], // Q6
+      ["응답붕괴", "느림", "보통", "빠름", "즉결"] // Q7
+    ];
+
+    function startGame() {
+      document.getElementById('screen-intro').classList.remove('active');
+      setTimeout(() => {
+        document.getElementById('screen-intro').style.display = 'none';
+        document.getElementById('screen-game').classList.add('active');
+        drawRadar();
+      }, 500);
+    }
+
+    function handleInput(qIdx, val) {
+      scores[qIdx-1] = parseInt(val);
+      
+      // Dynamic Text Feedback
+      const tier = Math.floor(val / 20.1); // 0~4
+      document.getElementById(`fb-${qIdx}`).innerText = labels[qIdx-1][tier];
+      
+      // Haptic
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(5);
+      }
+
+      // Update HUD
+      updateTotal();
+      drawRadar();
+    }
+
+    function updateTotal() {
+      const avg = Math.round(scores.reduce((a,b)=>a+b) / 7);
+      document.getElementById('totalScore').innerText = avg + "%";
+    }
+
+    function nextCard(currentIdx) {
+      const curr = document.getElementById(`card-${currentIdx}`);
+      const next = document.getElementById(`card-${currentIdx+1}`);
+      
+      curr.classList.remove('current');
+      curr.classList.add('prev');
+      
+      if(next) {
+        next.classList.add('current');
+      }
+    }
+
+    // --- RADAR CHART (CANVAS) ---
+    function drawRadar() {
+      const canvas = document.getElementById('radarChart');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = 160; // Increased resolution
+      const h = canvas.height = 160;
+      const cx = w/2, cy = h/2, r = 70;
+
+      ctx.clearRect(0, 0, w, h);
+      
+      // Draw Background Poly
+      ctx.beginPath();
+      for (let i = 0; i < 7; i++) {
+        const ang = (Math.PI * 2 / 7) * i - Math.PI / 2;
+        ctx.lineTo(cx + Math.cos(ang) * r, cy + Math.sin(ang) * r);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw Data Poly
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(45, 91, 255, 0.45)';
+      ctx.strokeStyle = '#2d5bff';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 7; i++) {
+        const ang = (Math.PI * 2 / 7) * i - Math.PI / 2;
+        const val = scores[i] / 100 * r;
+        ctx.lineTo(cx + Math.cos(ang) * val, cy + Math.sin(ang) * val);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    // --- RESULT LOGIC ---
+    function finishGame() {
+      document.getElementById('screen-game').classList.remove('active');
+      document.getElementById('screen-result').classList.add('active');
+      
+      const s = { q1:scores[0], q2:scores[1], q3:scores[2], q4:scores[3], q5:scores[4], q6:scores[5], q7:scores[6] };
+      const avg = Math.round(scores.reduce((a,b)=>a+b) / 7);
+      
+      let type, rank, desc, main, sub;
+
+      // Rank Logic
+      if (avg >= 90) rank = "S";
+      else if (avg >= 80) rank = "A";
+      else if (avg >= 60) rank = "B";
+      else rank = "C";
+      
+      document.getElementById('res-score').innerText = rank;
+
+      // Type Logic (Weakest Link)
+      if (s.q7 < 40) { // Operations (Response)
+        type = "Response Collapse (응답 붕괴)";
+        desc = "문의는 들어오는데 '응답 속도/스크립트/예약 동선'이 약해 전환이 새고 있습니다. 가장 먼저 ‘결정’이 일어나는 구간부터 수리해야 합니다.";
+        main = "Inbound Response System";
+        sub = "문의→응답→예약 스크립트 + 운영 동선 세팅(2주)";
+      } else if (s.q6 < 40) { // Offer
+        type = "Offer Discord (제안 불일치)";
+        desc = "상품(서비스)이 좋아도, 패키지/가격/혜택 표현이 흐리면 고객은 결정을 미룹니다. 업셀 피라미드와 한 문장 제안이 필요합니다.";
+        main = "Offer & Package Engineering";
+        sub = "3티어 상품화 + 업셀 구조 + 랜딩 카피(1~2주)";
+      } else if (s.q5 < 40 || s.q4 < 40) { // Trust / Routine
+        type = "Trust Volatility (신뢰 불안정)";
+        desc = "증거가 누적되지 않으면 플랫폼에서 ‘의심’이 이깁니다. 리뷰/사진/소식/FAQ를 루틴으로 고정해 신뢰를 자동으로 쌓아야 합니다.";
+        main = "Review & Proof Engine";
+        sub = "리뷰 루틴 + 사진/소식/FAQ 증거 세팅(4주)";
+      } else if (s.q3 < 50) { // Conversion Path
+        type = "Conversion Friction (전환 마찰)";
+        desc = "유입은 있어도 클릭→문의→예약 동선에서 마찰이 생기면 고객이 빠져나갑니다. 버튼/동선/문구를 ‘결정이 나게’ 정렬해야 합니다.";
+        main = "Platform Conversion Rebuild";
+        sub = "플레이스/랜딩 동선·버튼·문구 리빌드(1~2주)";
+      } else if (s.q1 < 50 || s.q2 < 50) { // Platform First Impression
+        type = "Hidden Value (포장 약함)";
+        desc = "내실은 있는데 첫 화면에서 가치가 잘 전달되지 않습니다. 대표 이미지·소개글·구성만 바꿔도 문의가 빨라집니다.";
+        main = "Hero & Listing Upgrade";
+        sub = "대표 이미지/사진 순서/소개글 리디자인(7일)";
+      } else {
+        type = "Total Alignment (확장형)";
+        desc = "플랫폼·전환·신뢰·운영이 정렬돼 있습니다. 이제는 확장(키워드/지역/광고)과 비주얼 스프린트로 ‘증거’를 증폭할 타이밍입니다.";
+        main = "WEPLACE × WKND Hybrid Sprint";
+        sub = "Visual Sprint + 인바운드 루틴 + 확장 키워드(8~12주)";
+      }
+document.getElementById('res-type').innerText = type;
+      document.getElementById('res-desc').innerText = desc;
+      document.getElementById('rec-main').innerText = main;
+      document.getElementById('rec-sub').innerText = sub;
+    }
+
+    function copyInquiry() {
+      const type = document.getElementById('res-type').innerText;
+      const rec = document.getElementById('rec-main').innerText;
+      const avg = document.getElementById('totalScore').innerText;
+      
+      const txt = `[WEPLACE Inbound Audit 문의]
+• Business Type: ${type}
+• Score: ${avg}
+• Recommended: ${rec}
+
+(1) 업종/지역:
+(2) 플랫폼 링크(네이버/구글/인스타/홈페이지):
+(3) 현재 고민 1줄:
+(4) 연락처:`;
+      
+      const ta = document.getElementById('copyBox');
+      ta.value = txt;
+      ta.select();
+      document.execCommand('copy');
+      alert("문의 텍스트가 복사되었습니다.\n카톡/문자/메일로 전송해주세요.");
+    }
+  </script>
+
+</body>
+</html>
