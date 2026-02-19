@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NANDA THAI AROMA × WEPLACE | Strategy Deck</title>
+  <style>
+    /* --- [MASHCORE DARK SYSTEM 2.0] --- */
+    :root {
+      --bg-base: #03060c;
+      --panel-bg: rgba(15, 23, 42, 0.45);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --accent-teal: #5BE8D6;
+      --accent-rose: #F43F5E;
+      --accent-gold: #FBBF24;
+      
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(91, 232, 214, 0.3);
+      
+      --slideW: 1280px;
+      --slideH: 720px;
+      --font-main: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html, body { height: 100%; overflow: hidden; }
+    
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      /* 딥한 우주/오로라 느낌의 다이나믹 배경 */
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(91, 232, 214, 0.12), transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(244, 63, 94, 0.1), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(251, 191, 36, 0.05), transparent 40%);
+    }
+
+    /* --- App Frame --- */
+    .app { height: 100%; display: flex; flex-direction: column; }
+
+    /* Top Navigation Bar */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-glass);
+      background: rgba(3, 6, 12, 0.6);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .brand { display: flex; gap: 14px; align-items: center; }
+    .logo {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-teal), var(--accent-rose));
+      box-shadow: 0 0 20px rgba(91, 232, 214, 0.3);
+      position: relative;
+    }
+    .logo::after { /* 로고 안쪽 디테일 */
+      content: ''; position: absolute; inset: 2px;
+      border-radius: 10px; background: rgba(0,0,0,0.4);
+    }
+    .brand h1 { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; }
+    .brand .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-family: var(--font-mono); }
+
+    /* Controls */
+    .controls { display: flex; gap: 12px; align-items: center; }
+    .btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn:hover { background: rgba(91, 232, 214, 0.1); border-color: var(--accent-teal); transform: translateY(-1px); }
+    .btn kbd {
+      font-family: var(--font-mono); font-size: 10px;
+      padding: 2px 6px; border-radius: 4px;
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border-glass);
+    }
+
+    /* Progress Bar */
+    .progress-wrap { display: flex; align-items: center; gap: 15px; min-width: 200px; }
+    .progress-text { font-family: var(--font-mono); font-size: 12px; color: var(--accent-teal); font-weight: 700; width: 40px; text-align: right; }
+    .progress-track {
+      flex: 1; height: 6px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.05); overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-rose));
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* --- Stage & Deck --- */
+    .stage {
+      flex: 1; display: grid; place-items: center;
+      padding: 24px; position: relative;
+    }
+    .deck {
+      width: min(var(--slideW), 96vw);
+      height: min(var(--slideH), 54vw);
+      max-height: calc(100vh - 100px);
+      position: relative;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(10, 15, 26, 0.6);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+
+    /* --- Slides --- */
+    .slide {
+      position: absolute; inset: 0;
+      padding: 60px 70px;
+      opacity: 0; visibility: hidden;
+      transform: translateY(20px) scale(0.98);
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .slide.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+
+    .content { display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; }
+
+    /* Typography */
+    .meta-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--border-glass);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px;
+      border: 1px solid rgba(91, 232, 214, 0.3); background: rgba(91, 232, 214, 0.08);
+      font-size: 13px; font-weight: 700; color: var(--accent-teal); letter-spacing: 0.5px;
+    }
+    .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-teal); box-shadow: 0 0 10px var(--accent-teal); }
+    .badge.rose { border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.08); color: var(--accent-rose); }
+    .badge.rose .dot { background: var(--accent-rose); box-shadow: 0 0 10px var(--accent-rose); }
+    
+    .meta-info { text-align: right; font-size: 12px; color: var(--text-muted); line-height: 1.6; font-family: var(--font-mono); }
+
+    h2 { font-size: 46px; font-weight: 900; letter-spacing: -1px; line-height: 1.2; margin-bottom: 15px; }
+    h3 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 15px; display:flex; align-items:center; gap:12px;}
+    h3::before { content:''; display:block; width:4px; height:24px; background:var(--accent-teal); border-radius:2px; }
+    
+    .subtitle { font-size: 20px; color: var(--text-muted); line-height: 1.6; font-weight: 400; margin-bottom: 30px; }
+    .highlight { color: #fff; font-weight: 700; background: linear-gradient(90deg, transparent, rgba(91,232,214,0.1) 50%, transparent); padding: 0 5px;}
+
+    /* Layout Grids */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex: 1; min-height: 0; }
+    .grid-1-2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; flex: 1; min-height: 0; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+    /* Glass Cards */
+    .card {
+      background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border-glass);
+      border-radius: 16px; padding: 24px;
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
+      transition: all 0.3s;
+    }
+    .card:hover { border-color: rgba(255,255,255,0.2); background: rgba(15, 23, 42, 0.7); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .card.focus { border-top: 3px solid var(--accent-teal); }
+    .card.warning { border-top: 3px solid var(--accent-rose); }
+    
+    .card-hd {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .card-hd strong { font-size: 18px; font-weight: 800; color: #fff; }
+    
+    /* Lists & Text */
+    ul { list-style: none; margin: 0; padding: 0; display:flex; flex-direction: column; gap: 12px; }
+    li {
+      position: relative; padding-left: 20px; font-size: 16px; color: var(--text-muted); line-height: 1.5;
+    }
+    li::before {
+      content: "›"; position: absolute; left: 0; top: 0; color: var(--accent-teal); font-weight: 900; font-family: var(--font-mono);
+    }
+    li b { color: #fff; }
+
+    /* Stat Box (데이터 강조) */
+    .stat-box { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); margin-bottom:15px; }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 4px; text-transform: uppercase; }
+    .stat-val { font-size: 28px; font-weight: 900; color: var(--accent-teal); display: flex; align-items: baseline; gap: 8px; }
+    .stat-val span { font-size: 14px; color: #fff; font-weight: 500; }
+
+    /* Callout Box (인사이트) */
+    .callout {
+      margin-top: auto; background: linear-gradient(90deg, rgba(91, 232, 214, 0.1), transparent);
+      border-left: 3px solid var(--accent-teal); border-radius: 0 12px 12px 0;
+      padding: 16px 20px; display: flex; gap: 16px; align-items: flex-start;
+    }
+    .callout .icon { font-size: 20px; }
+    .callout p { margin: 0; font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+
+    /* Footer */
+    .slide-footer {
+      position: absolute; bottom: 24px; left: 70px; right: 70px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border-glass); padding-top: 16px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+    }
+    .slide-footer b { color: var(--accent-teal); }
+
+    /* Flow Diagram Elements (Slide 9) */
+    .flow-wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 20px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 16px; }
+    .flow-step { flex: 1; text-align: center; position: relative; }
+    .flow-step .circle { width: 60px; height: 60px; border-radius: 50%; background: rgba(15,23,42,0.8); border: 2px solid var(--accent-teal); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px; z-index: 2; position: relative; box-shadow: 0 0 15px rgba(91,232,214,0.2); }
+    .flow-step .t { font-size: 13px; font-weight: 700; color: #fff; }
+    .flow-arrow { color: var(--text-muted); font-size: 20px; }
+
+    /* --- Print Styles (A4 가로 모드 최적화) --- */
+    @media print {
+      body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+      .topbar, .controls, .progress-wrap { display: none !important; }
+      .stage { padding: 0 !important; display: block !important; }
+      .deck { width: 100% !important; height: auto !important; max-height: none !important; border: none !important; box-shadow: none !important; background: #fff !important; overflow: visible !important; border-radius: 0 !important;}
+      .slide { position: relative !important; opacity: 1 !important; visibility: visible !important; transform: none !important; page-break-after: always; height: 100vh; padding: 40px !important; }
+      h2, h3, .card-hd strong { color: #000 !important; }
+      .subtitle, li { color: #333 !important; }
+      .highlight { color: #000 !important; background: none !important; font-weight: 800; border-bottom: 2px solid #5BE8D6; }
+      .card { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+      .card.focus { border-top: 3px solid #0f172a !important; }
+      li::before { color: #0f172a !important; }
+      .stat-box { background: #fff !important; border: 1px solid #e2e8f0 !important; }
+      .stat-val { color: #0f172a !important; }
+      .stat-val span { color: #64748b !important; }
+      .callout { background: #f1f5f9 !important; border-left-color: #0f172a !important; }
+      .callout p { color: #1e293b !important; }
+      .badge { background: #fff !important; border-color: #0f172a !important; color: #0f172a !important; }
+      .badge .dot { background: #0f172a !important; box-shadow: none !important;}
+      .flow-step .circle { background: #fff !important; border-color: #0f172a !important; color: #0f172a !important;}
+      .flow-step .t { color: #0f172a !important; }
+      /* PDF 출력 시 여백 제거 */
+      @page { size: A4 landscape; margin: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>NANDA THAI AROMA × WEPLACE</h1>
+          <div class="sub">Digital Channel Strategy & Protocol</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="prevBtn" type="button"><kbd>←</kbd> PREV</button>
+        <button class="btn" id="nextBtn" type="button">NEXT <kbd>→</kbd></button>
+        <button class="btn" style="margin-left: 10px; border-color:var(--accent-gold); color:var(--accent-gold);" id="printBtn" type="button"><kbd>Ctrl+P</kbd> PDF SAVE</button>
+      </div>
+
+      <div class="progress-wrap" aria-label="progress">
+        <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="barFill"></div></div>
+        <div class="progress-text" id="countText">1/12</div>
+      </div>
+    </header>
+
+    <main class="stage">
+      <div class="deck" id="deck">
+
+        <section class="slide active">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> STRATEGY FOUNDATION</div>
+              <div class="meta-info">
+                DATE: 2026.02.19<br/>
+                TO: NANDA THAI AROMA<br/>
+                FROM: WEPLACE Consulting
+              </div>
+            </div>
+
+            <div style="margin: auto 0;">
+              <h2>난다타이아로마<br/>디지털 채널 구축 & 확장 전략</h2>
+              <p class="subtitle">
+                단순한 단기 랭킹 싸움이 아닙니다.<br/>
+                리뷰, 시각 데이터, 현장 경험을 묶어 <span class="highlight">"랭킹이 흔들려도 예약이 꽂히는"</span> 난공불락의 구조를 설계합니다.
+              </p>
+
+              <div class="callout" style="margin-top: 40px; max-width: 800px;">
+                <div class="icon">💡</div>
+                <p>
+                  본 리포트는 <b>[네이버(국내) + 구글(신규성장) + 트립어드바이저(해외확장)]</b>의 역할을 철저히 분리합니다.<br/>
+                  특히 해외 플랫폼의 외부 승인 리스크를 감안하여, <b>"해외 마케팅 3개월 무료 연장"</b>이라는 파격적이고 책임감 있는 동행 조건을 제안합니다.
+                </p>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+            
+              <div><b>Slide 01</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> AGENDA</div>
+              <div class="meta-info">핵심만 빠르게, 실행 가능한 형태로</div>
+            </div>
+
+            <h3>오늘 논의할 핵심 과제</h3>
+
+            <div class="grid-2">
+              <div class="card focus">
+                <div class="card-hd"><strong>프로젝트 궁극적 목표</strong></div>
+                <ul>
+                  <li>'명동마사지' 검색의 막연한 수요를 <b>확실한 실방문/예약</b>으로 전환</li>
+                  <li>각 채널별 역할을 분리하여 흔들리지 않는</br> <b>롱런 신뢰 자산(리뷰/사진)</b> 축적</li>
+                  <li>Tripadvisor를 넘어 Klook 등 글로벌 OTA 진입을 위한 <b>초석 마련</b></li>
+                </ul>
+              </div>
+              <div class="card">
+                <div class="card-hd"><strong>발표 목차</strong></div>
+                <ul style="counter-reset: agenda;">
+                  <li style="padding-left:0;"><b>01.</b> 현재 디지털 성과 스냅샷</li>
+                  <li style="padding-left:0;"><b>02.</b> 트라이앵글 채널 전략 (Naver / Google / TA)</li>
+                  <li style="padding-left:0;"><b>03.</b> 현장 넛징 : 향(Scent) 기반 리뷰 확보 시스템</li>
+                  <li style="padding-left:0;"><b>04.</b> 현실적 리스크 진단 (OTA 입점 거부)</li>
+                  <li style="padding-left:0;"><b>05.</b> WEPLACE 특별 제안 (3개월 연장)</li>
+                  <li style="padding-left:0;"><b>06.</b> 30-60-90일 실행 로드맵</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>WEPLACE SYSTEM</div>
+              <div><b>Slide 02</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> SNAPSHOT</div>
+              <div class="meta-info">"초입 단계"에서 확인된 확실한 성공 신호</div>
+            </div>
+
+            <h3>현재 운영 현황 및 성과 요약</h3>
+
+            <div class="grid-3" style="margin-bottom: 24px;">
+              <div class="stat-box">
+                <div class="stat-label">Naver Place</div>
+                <div class="stat-val">1st <span>Page</span></div>
+                <p style="font-size:13px; color:#cbd5e1; margin-top:8px;">'명동마사지' 검색 시<br/>항상 첫 페이지 유지 중</p>
+              </div>
+              <div class="stat-box" style="border-color:var(--accent-teal);">
+                <div class="stat-label">Google Business</div>
+                <div class="stat-val">No.1 <span>Rank</span></div>
+                <p style="font-size:13px; color:#cbd5e1; margin-top:8px;">사진 등록 후<br/>동일 키워드 1위 노출 (2026-02-19 기준)</p>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Tripadvisor</div>
+                <div class="stat-val">Ready <span></span></div>
+                <p style="font-size:13px; color:#cbd5e1; margin-top:8px;">계정 등록 완료<br/>사진/키워드 세팅 진행 중</p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-hd"><strong>현 상황에 대한 전략적 정의</strong></div>
+              <p style="font-size:18px; color:#fff; line-height:1.6;">
+                난다타이아로마는 현재 단순한 광고를 넘어 <b>"롱런(Long-run) 브랜드의 초입 단계"</b>에 섰습니다.<br/>
+                랭킹은 알고리즘에 의해 변동될 수 있으나, 지금 쌓고 있는 <span class="highlight">리뷰, 사진, 정확한 정보라는 '신뢰 자산'</span>은 변동장에서도 예약을 방어하는 강력한 해자가 될 것입니다.
+              </p>
+            </div>
+
+            <div class="slide-footer">
+              <div>DATA BACKED ANALYSIS</div>
+              <div><b>Slide 03</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> CHANNEL MAP</div>
+              <div class="meta-info">각 플랫폼은 "다른 목적의 고객"을 타겟팅합니다</div>
+            </div>
+
+            <h3>트라이앵글 채널 포지셔닝</h3>
+
+            <div class="grid-3">
+              <div class="card focus">
+                <div class="card-hd"><strong>NAVER <span style="font-size:12px; font-weight:400; color:var(--text-muted);">국내 기반</span></strong></div>
+                <div style="font-size:12px; color:var(--accent-teal); margin-bottom:10px; font-family:var(--font-mono);">[ STABLE ENGINE ]</div>
+                <ul>
+                  <li>국내 유저의 기본 검색 및 예약 동선</li>
+                  <li><b>'명동마사지' 1페이지 유지</b>를 통한 </br>안정적 트래픽 확보</li>
+                  <li>리뷰/저장 꾸준한 증가로</br> <b>'실패 없는 샵'</b> 이미지 구축</li>
+                </ul>
+              </div>
+              <div class="card" style="border-top: 3px solid #3B82F6;">
+                <div class="card-hd"><strong>GOOGLE <span style="font-size:12px; font-weight:400; color:var(--text-muted);">해외/지도</span></strong></div>
+                <div style="font-size:12px; color:#3B82F6; margin-bottom:10px; font-family:var(--font-mono);">[ NEW GROWTH ]</div>
+                <ul>
+                  <li>외국인 관광객 및 지도 기반 유저의</br> <b>첫 클릭 관문</b></li>
+                  <li>WEPLACE 전용 성장 장치(Q&A, 포스트) 가동 중</li>
+                  <li>지도 검색에서</br> <b>'신뢰' → '즉시 방문/연락'</b> 유도</li>
+                </ul>
+              </div>
+              <div class="card warning">
+                <div class="card-hd"><strong>TRIPADVISOR <span style="font-size:12px; font-weight:400; color:var(--text-muted);">글로벌 OTA</span></strong></div>
+                <div style="font-size:12px; color:var(--accent-rose); margin-bottom:10px; font-family:var(--font-mono);">[ EXPANSION ]</div>
+                <ul>
+                  <li>해외 유저의 깐깐한 검증 플랫폼에서 <b>Proof(증거)</b> 축적</li>
+                  <li>향후 클룩(Klook) 등 대형 OTA</br> 진입을 위한 <b>교두보 역할</b></li>
+                  <li>*단, 플랫폼 수수료 정책에 따른 </br><b>입점 거부 리스크</b> 존재</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>MULTI-CHANNEL PROTOCOL</div>
+              <div><b>Slide 04</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> DEEP DIVE 01</div>
+              <div class="meta-info">네이버 플레이스 운영 (안정화)</div>
+            </div>
+
+            <h3>네이버: "흔들리지 않는 기본 엔진"</h3>
+            <p class="subtitle">네이버는 새로운 것을 시도하기보다 '현재의 성공을 굳히는' 방어적이고 안정적인 리듬이 중요합니다.</p>
+
+            <div class="grid-1-2">
+              <div class="card focus">
+                <div class="card-hd"><strong>유지 및 보강 프로토콜</strong></div>
+                <ul>
+                  <li><b>시각적 일관성:</b> 대표 이미지 및 서비스(메뉴) 구성의 톤앤매너 통일</li>
+                  <li><b>마찰 없는 동선:</b> 문의 → 예약 → 결제 흐름에서 고객 이탈 포인트 완벽 제거</li>
+                  <li><b>업데이트 리듬:</b> 주간/격주 단위의 일정한 리뷰 및 사진 업데이트로 </br>알고리즘에 '활성화된 매장' 신호 전달</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-hd"><strong>핵심 측정 지표 (KPI)</strong></div>
+                <ul style="gap:16px;">
+                  <li><b style="color:var(--accent-teal);">1차:</b> 플레이스 저장 수, 문의 건수, 실제 예약 전환율</li>
+                  <li><b style="color:var(--accent-teal);">2차:</b> 월간 리뷰 증가량 및 리뷰의 '구체성(품질)'</li>
+                  <li><b style="color:var(--accent-teal);">3차:</b> 메인 키워드 노출 안정성 (페이지 변동폭 추적)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>NAVER ALGORITHM OPTIMIZATION</div>
+              <div><b>Slide 05</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> DEEP DIVE 02</div>
+              <div class="meta-info">구글 비즈니스 프로필 (신규 성장)</div>
+            </div>
+
+            <h3>구글: "WEPLACE 시스템 동기화"</h3>
+            <p class="subtitle">외국인 대상의 새로운 성장 엔진입니다. 초반 리뷰와 사진의 압도적인 축적 속도가 성패를 가릅니다.</p>
+
+            <div class="grid-2">
+              <div class="card" style="border-top: 3px solid #3B82F6;">
+                <div class="card-hd"><strong>WEPLACE 성장 장치 적용</strong></div>
+                <ul>
+                  <li><b>글로벌 스탠다드:</b> 서비스 항목 및 설명 정교화 (영문 기본 탑재)</li>
+                  <li><b>질문 선점:</b> Q&A 시드 5개 사전 세팅으로 외국인 관광객의</br> 불안 요소 선제적 제거</li>
+                  <li><b>신선도 유지:</b> 주간 포스트/사진 업데이트 루틴 가동</li>
+                  <li><b>신뢰 구축:</b> 다국어 리뷰 응답 템플릿 즉시 도입</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-hd"><strong>핵심 측정 지표 (KPI)</strong></div>
+                <ul>
+                  <li>리뷰 증가 속도, 평균 평점 유지, 사장님 응답률 100%</li>
+                  <li>프로필 검색 조회수 및 사진 뷰 수</li>
+                  <li><b>전환 지표:</b> 전화걸기, 길찾기 클릭, 웹사이트 방문 횟수</li>
+                </ul>
+                <div class="callout" style="margin-top: 10px; padding: 12px;">
+                  <div class="icon">⚡</div>
+                  <p style="font-size:13px;">막연한 '요청'이 아닌, <b>현장에서 온라인으로 이어지는 확실한 전환 설계</b>가 필요합니다. (Slide 9 참조)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>GOOGLE LOCAL SEO</div>
+              <div><b>Slide 06</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge rose"><span class="dot"></span> REALITY CHECK</div>
+              <div class="meta-info">OTA 입점의 현실적 리스크</div>
+            </div>
+
+            <h3>Tripadvisor 및 글로벌 OTA 확장 리스크</h3>
+            <p class="subtitle">무조건적인 핑크빛 약속은 하지 않습니다. 플랫폼의 생태계를 이해하고 대비해야 합니다.</p>
+
+            <div class="grid-1-2">
+              <div class="card warning">
+                <div class="card-hd"><strong>결정적 리스크 (입점 거부/지연)</strong></div>
+                <ul>
+                  <li>플랫폼(클룩 등)은 철저히 <b>"수수료 수익 극대화"</b>를 목적으로 움직입니다.</li>
+                  <li>특정 상권(명동)에 이미 유사 업종(마사지)이 포화 상태일 경우, 플랫폼 측에서</br> <b>"신규 입점 시켜도 파이(수익)가 커지지 않는다"</b>고 판단할 수 있습니다.</li>
+                  <li>이 경우 샵의 퀄리티와 무관하게 <b>입점이 거절되거나 기약 없이 지연</b>되는</br> 변수가 존재합니다.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-hd"><strong>Tripadvisor의 역할</strong></div>
+                <p style="font-size:15px; color:#ccc; line-height:1.6; margin-bottom:15px;">
+                  따라서 TA는 당장의 직접 매출 창출보다는, 향후 까다로운 OTA 플랫폼 심사를 통과하기 위한 <b>"글로벌 고객의 검증된 레퍼런스(Proof)"</b> 저장소로 활용해야 합니다.
+                </p>
+                <div class="stat-box" style="margin:0; padding:12px;">
+                  <div class="stat-label">Next Step</div>
+                  <div class="stat-val" style="font-size:18px;">표준화 패키지 준비</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>RISK MANAGEMENT</div>
+              <div><b>Slide 07</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> WEPLACE PROPOSAL</div>
+              <div class="meta-info">동반 성장을 위한 책임형 제안</div>
+            </div>
+
+            <h3 style="color:var(--accent-gold);">해외 마케팅 <span style="font-size:40px;">3개월 무료 연장</span> 보증</h3>
+            <p class="subtitle">위에서 언급한 '플랫폼 승인 변수'를 대행사가 아닌 파트너로서 함께 짊어지겠습니다.</p>
+
+            <div class="card focus" style="margin-bottom: 20px;">
+              <div class="card-hd"><strong>연장 기간 동안의 수행 과업 (What we do)</strong></div>
+              <div class="grid-2" style="gap:10px;">
+                <ul>
+                  <li>Tripadvisor 고품질 사진/소개문구/키워드 지속 관리</li>
+                  <li>구글 GBP 리뷰 응답 및 포스트 발행 루틴 강화</li>
+                </ul>
+                <ul>
+                  <li>필수 영문(EN) 및 다국어(JP/CH) 텍스트 패키지 정교화</li>
+                  <li>Klook 등 대형 OTA 요건 지속 모니터링 및 진입 시도</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="callout">
+              <div class="icon">🤝</div>
+              <p>
+                단순히 '세팅해 주고 끝'이 아닙니다. 해외 마케팅이 실제 고객 유입이라는 <b>'성과'로 이어지는 타이밍</b>까지 WEPLACE가 무료 연장을 통해 성과를 창출합니다.
+              </p>
+            </div>
+
+          
+              
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> UX ENGINEERING</div>
+              <div class="meta-info">요청이 아닌 '설계'로 리뷰를 얻습니다</div>
+            </div>
+
+            <h3>현장 → 온라인 전환 시스템 (Scent Trigger)</h3>
+            
+            <div class="flow-wrap">
+              <div class="flow-step">
+                <div class="flow-arrow" style="position:absolute; right:-15px; top:20px; z-index:1;">→</div>
+                <div class="circle">💆‍♀️</div>
+                <div class="t">최고의 현장 케어</div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-arrow" style="position:absolute; right:-15px; top:20px; z-index:1;">→</div>
+                <div class="circle">🗣️</div>
+                <div class="t">결제 시 20초 스크립트</div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-arrow" style="position:absolute; right:-15px; top:20px; z-index:1;">→</div>
+                <div class="circle">🌿</div>
+                <div class="t">미감/향기 리뷰 카드</div>
+              </div>
+              <div class="flow-step">
+                <div class="circle" style="border-color:var(--accent-gold); color:var(--accent-gold);">⭐</div>
+                <div class="t" style="color:var(--accent-gold);">구글/네이버 리뷰 안착</div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="card focus">
+                <div class="card-hd"><strong>직원용 20초 넛지 스크립트</strong></div>
+                <p style="font-size:16px; color:#fff; line-height:1.6; font-style:italic;">
+                  "오늘 받으신 케어가 피로를 푸는 데 도움이 되셨다면,</br> <b>솔직한 후기 한 줄</b>만 남겨주시면 저희에게 정말 큰 힘이 됩니다. <br/>(향이 밴 카드를 건네며) 이 QR로 바로 연결돼요. </br>아쉬웠던 점을 적어주셔도 괜찮습니다."
+                </p>
+              </div>
+              <div class="card">
+                <div class="card-hd"><strong>심리적 기법 (Why it works)</strong></div>
+                <ul>
+                  <li><b>향기(Scent) 앵커링:</b> 후각은 뇌의 기억 중추와 직결됩니다. </br>카드의 향기가 샵에서의 편안함을 연상, 자발적 리뷰를 유도합니다.</li>
+                  <li><b>정책 리스크 방지:</b> '할인/사은품' 등의 대가성 멘트를 배제하고</br> '솔직 피드백' 프레임을 씌워 플랫폼 페널티를 원천 차단합니다.</li>
+                </ul>
+              </div>
+            </div>
+
+            
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> EXECUTION ROADMAP</div>
+              <div class="meta-info">실행 리듬이 성과를 만듭니다</div>
+            </div>
+
+            <h3>30 / 60 / 90 일 로드맵</h3>
+
+            <div class="grid-3">
+              <div class="card focus">
+                <div class="card-hd"><strong>D+30 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">기초 공사</span></strong></div>
+                <ul>
+                  <li>구글 프로필 완벽 세팅 및 Q&A 시드 5개 배포</li>
+                  <li>향 카드 현장 배포 시작 및 스크립트 직원 교육</li>
+                  <li>주요 성과 스크린샷 아카이브 시스템 가동</li>
+                </ul>
+              </div>
+              <div class="card" style="border-top:3px solid #3B82F6;">
+                <div class="card-hd"><strong>D+60 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">전환 강화</span></strong></div>
+                <ul>
+                  <li>내부 시설/청결/직원 신뢰도를 보여주는</br> 시각 데이터 보강</li>
+                  <li>Tripadvisor 초기 리뷰 시드 달성 (목표치 설정)</li>
+                  <li>구글 리뷰 증가 속도 점검 및 대응</li>
+                </ul>
+              </div>
+              <div class="card" style="border-top:3px solid var(--accent-gold);">
+                <div class="card-hd"><strong>D+90 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">스케일 업</span></strong></div>
+                <ul>
+                  <li>Klook 등 대형 플랫폼 제출용 </br>표준 패키지(정책/사진) 완성</li>
+                  <li>"검색 → 지도 → 신뢰 → 방문" 퍼널 완벽 연결</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>TIMELINE & MILESTONES</div>
+              <div><b>Slide 10</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> R&R AND KPI</div>
+              <div class="meta-info">역할의 명확함이 롱런을 만듭니다</div>
+            </div>
+
+            <div class="grid-1-2">
+              <div class="card focus">
+                <div class="card-hd"><strong>상호 역할 분담 (R&R)</strong></div>
+                <ul>
+                  <li><b>WEPLACE (전략/시스템):</b><br/>플랫폼 최적화 세팅, 다국어 콘텐츠 구조화, 템플릿 제작, 월간 성과 리포팅, OTA 뚫기 전략 실행.</li>
+                  <li><br><b>NANDA THAI (현장/소스):</b><br/>향 카드 배포 및 스크립트 실행, 생생한 현장 사진 소스 제공, 예약/운영 정보 변경 시 즉각 공유.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-hd"><strong>핵심 KPI 모니터링</strong></div>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                  <div class="stat-box" style="margin:0; padding:10px;">
+                    <div class="stat-label">Google</div>
+                    <div style="font-size:14px; font-weight:700; color:#fff;">리뷰 증가율 / 사진 조회수</div>
+                  </div>
+                  <div class="stat-box" style="margin:0; padding:10px; border-color:var(--accent-teal);">
+                    <div class="stat-label">Naver</div>
+                    <div style="font-size:14px; font-weight:700; color:#fff;">저장·문의 수 / 노출 순위 방어</div>
+                  </div>
+                  <div class="stat-box" style="margin:0; padding:10px;">
+                    <div class="stat-label">Offline</div>
+                    <div style="font-size:14px; font-weight:700; color:#fff;">향 카드 배포 대비 QR 스캔율</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>MEASUREMENT & ACCOUNTABILITY</div>
+              <div><b>Slide 11</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide">
+          <div class="content">
+            <div class="meta-header">
+              <div class="badge"><span class="dot"></span> CLOSING</div>
+              <div class="meta-info">We, Place.</div>
+            </div>
+
+            <div style="margin: auto 0; text-align: center;">
+              <h2 style="font-size: 38px; margin-bottom: 20px;">구조가 깔리면, <br/><span style="color:var(--accent-teal);">롱런은 확률이 됩니다.</span></h2>
+              <p style="max-width: 800px; margin: 0 auto 40px; font-size: 16px;">
+                플랫폼의 정책은 매일 바뀌고 랭킹은 요동칩니다.<br/>하지만 우리가 지금부터 쌓아 올릴 <b>'고객의 진짜 목소리(리뷰)'</b>와 <b>'압도적인 시각 자료'</b>는<br/>그 어떤 알고리즘 변화에도 난다타이아로마의 예약을 지켜줄 것입니다.
+              </p>
+
+              <div class="card" style="text-align: left; max-width: 600px; margin: 0 auto; border-top: 3px solid var(--accent-gold);">
+                <div class="card-hd" style="margin-bottom:10px; padding-bottom:10px;"><strong>Next 7 Days (즉시 실행 과제)</strong></div>
+                <ul style="font-size:15px;">
+                  <li>네이버/구글 현재 노출 상태 캡처 완료 (Before Data)</li>
+                  <li>향 카드 디자인 시안 컨펌 및 발주 (인쇄 진행)</li>
+                  <li>구글 Q&A 시드 5개 등록 완료</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="slide-footer">
+              <div>THANK YOU</div>
+              <div><b>Slide 12</b> / 12</div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const printBtn = document.getElementById("printBtn");
+      const countText = document.getElementById("countText");
+      const barFill = document.getElementById("barFill");
+
+      let idx = 0;
+
+      function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+      function render(){
+        idx = clamp(idx, 0, slides.length - 1);
+        slides.forEach((s, i) => {
+          if (i === idx) {
+            s.classList.add("active");
+          } else {
+            s.classList.remove("active");
+          }
+        });
+        countText.textContent = `${idx+1}/${slides.length}`;
+        const pct = ((idx+1)/slides.length)*100;
+        barFill.style.width = pct.toFixed(2) + "%";
+        
+        // Hash link
+        history.replaceState(null, "", `#slide-${idx+1}`);
+      }
+
+      function next(){ idx++; render(); }
+      function prev(){ idx--; render(); }
+
+      // init from hash
+      const m = location.hash.match(/slide-(\d+)/);
+      if(m){
+        const n = parseInt(m[1],10);
+        if(!Number.isNaN(n)) idx = clamp(n-1, 0, slides.length-1);
+      }
+      render();
+
+      prevBtn.addEventListener("click", prev);
+      nextBtn.addEventListener("click", next);
+      printBtn.addEventListener("click", ()=> window.print());
+
+      window.addEventListener("keydown", (e)=>{
+        const key = e.key;
+        if(key === "ArrowRight" || key === "PageDown" || key === " "){
+          e.preventDefault(); next();
+        }
+        if(key === "ArrowLeft" || key === "PageUp"){
+          e.preventDefault(); prev();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
