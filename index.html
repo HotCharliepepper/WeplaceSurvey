@@ -2,257 +2,337 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>NANDA THAI AROMA × WEPLACE | Success Roadmap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>NANDA THAI AROMA × WEPLACE | Executive Strategy</title>
   <style>
-    /* --- [MASHCORE MOBILE SYSTEM] --- */
+    /* --- MASHCORE DARK SYSTEM 2.0 --- */
     :root {
-      --bg-base: #03060c;
-      --panel-bg: rgba(15, 23, 42, 0.6);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent-teal: #5BE8D6;
-      --accent-rose: #F43F5E;
-      --accent-gold: #FBBF24;
-      --border-glass: rgba(255, 255, 255, 0.08);
-      --font-main: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
+      --bg: #0b0f19;
+      --card: rgba(15, 23, 42, 0.45);
+      --card2: rgba(30, 41, 59, 0.6);
+      --text: rgba(248, 250, 252, 0.95);
+      --muted: rgba(148, 163, 184, 0.8);
+      --hairline: rgba(255, 255, 255, 0.08);
+      --accent: #5BE8D6; /* Teal */
+      --accent2: #FBBF24; /* Gold */
+      --accent3: #F43F5E; /* Rose */
+      --shadow: 0 18px 60px rgba(0,0,0,.5);
+      --radius: 16px;
+      --max: 1120px;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; width: 100%; background-color: var(--bg-base); color: var(--text-main); font-family: var(--font-main); overflow: hidden; }
     
+    * { box-sizing: border-box; }
+    html, body { height: 100%; scroll-behavior: smooth; }
     body {
-      background-image: 
-        radial-gradient(circle at 15% 50%, rgba(91, 232, 214, 0.08), transparent 50%),
-        radial-gradient(circle at 85% 30%, rgba(244, 63, 94, 0.05), transparent 50%);
+      margin: 0; font-family: "Pretendard", -apple-system, sans-serif;
+      background: radial-gradient(1000px 800px at 15% 5%, rgba(91, 232, 214, 0.1), transparent 50%),
+                  radial-gradient(800px 600px at 85% 20%, rgba(244, 63, 94, 0.08), transparent 50%),
+                  var(--bg);
+      color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased;
     }
-
-    .app { height: 100%; display: flex; flex-direction: column; position: relative; }
-
-    /* Top Bar */
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 20px 16px 80px; }
+    
+    /* Topbar */
     .topbar {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+      background: rgba(11, 15, 25, 0.85); border-bottom: 1px solid var(--hairline);
+    }
+    .topbar-inner {
+      max-width: var(--max); margin: 0 auto; padding: 12px 16px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px; border-bottom: 1px solid var(--border-glass);
-      background: rgba(3, 6, 12, 0.85); backdrop-filter: blur(12px); z-index: 100;
     }
-    .brand h1 { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; }
-    .brand .sub { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
-
-    /* Slide Container */
-    .stage { flex: 1; position: relative; overflow: hidden; }
+    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 10px var(--accent2); }
+    .nav { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .pill { padding: 6px 12px; border: 1px solid var(--hairline); background: var(--card); border-radius: 99px; font-size: 13px; color: var(--muted); transition: 0.2s; white-space: nowrap;}
+    .pill.active, .pill:hover { border-color: var(--accent); color: var(--text); background: var(--card2); }
     
-    /* Slides */
-    .slide {
-      position: absolute; inset: 0; padding: 30px 20px 100px 20px; /* 하단 버튼 영역 확보 */
-      opacity: 0; visibility: hidden; transform: translateX(20px);
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      overflow-y: auto; /* 내용이 길면 스크롤 가능 */
-      -webkit-overflow-scrolling: touch;
+    /* Hero */
+    .hero {
+      margin-top: 20px; padding: 32px; border-radius: 24px; border: 1px solid var(--hairline);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(15, 23, 42, 0.5));
+      box-shadow: var(--shadow);
     }
-    .slide.active { opacity: 1; visibility: visible; transform: translateX(0); }
-
-    /* Typography & Elements */
-    .badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 10px; border-radius: 99px; background: rgba(91, 232, 214, 0.1);
-      border: 1px solid rgba(91, 232, 214, 0.2); color: var(--accent-teal); font-size: 11px; font-weight: 700;
-    }
-    h2 { font-size: 32px; font-weight: 900; line-height: 1.25; margin: 16px 0; word-break: keep-all; }
-    h3 { font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--accent-teal); word-break: keep-all; }
-    .subtitle { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; word-break: keep-all; }
+    .hgrid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 24px; align-items: center; }
+    @media (max-width: 900px) { .hgrid { grid-template-columns: 1fr; } }
+    h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.5px; }
+    .subtitle { font-size: 16px; color: var(--muted); margin-bottom: 16px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .badge { font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--hairline); background: rgba(255,255,255,0.05); color: var(--accent); }
     
-    .grid { display: flex; flex-direction: column; gap: 16px; }
-    .card {
-      background: var(--panel-bg); border: 1px solid var(--border-glass);
-      border-radius: 14px; padding: 20px; position: relative;
-    }
-    .card strong { display: block; font-size: 17px; margin-bottom: 8px; color: #fff; }
-    .card p { font-size: 14px; color: var(--text-muted); line-height: 1.5; word-break: keep-all; }
+    /* Grid & Cards */
+    section { scroll-margin-top: 80px; margin-top: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .card { border: 1px solid var(--hairline); background: var(--card); border-radius: 20px; padding: 24px; position: relative; overflow: hidden; }
+    .card h2 { margin: 0 0 12px; font-size: 20px; letter-spacing: -0.3px; color: #fff; }
+    .kicker { font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .span-12 { grid-column: span 12; } .span-8 { grid-column: span 8; } .span-4 { grid-column: span 4; } .span-6 { grid-column: span 6; }
+    @media (max-width: 900px) { .span-8, .span-4, .span-6 { grid-column: span 12; } }
     
-    ul.check-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-    ul.check-list li { font-size: 13px; color: var(--text-muted); padding-left: 16px; position: relative; }
-    ul.check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent-teal); font-weight: 900; }
-
-    .stat-val { font-family: var(--font-mono); font-size: 26px; font-weight: 900; color: var(--accent-teal); margin-bottom: 4px; }
-    .highlight { color: var(--accent-teal); font-weight: 700; }
-
-    /* Bottom Navigation Controls */
-    .bottom-nav {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      display: flex; gap: 10px; padding: 16px 20px 24px 20px;
-      background: rgba(3, 6, 12, 0.9); backdrop-filter: blur(15px);
-      border-top: 1px solid var(--border-glass); z-index: 100;
-    }
-    .btn {
-      flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass);
-      color: var(--text-main); padding: 14px; border-radius: 10px;
-      font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s;
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-    }
-    .btn:active { background: rgba(91, 232, 214, 0.15); border-color: var(--accent-teal); transform: scale(0.98); }
-    .btn.primary { background: rgba(91, 232, 214, 0.1); border-color: rgba(91, 232, 214, 0.3); color: var(--accent-teal); }
-
-    .progress-dots {
-      display: flex; justify-content: center; gap: 6px; margin-bottom: 15px;
-    }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-glass); transition: 0.3s; }
-    .dot.active { background: var(--accent-teal); width: 16px; border-radius: 4px; }
-
+    ul.list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    ul.list li { position: relative; padding-left: 16px; color: var(--muted); font-size: 15px; }
+    ul.list li::before { content: "›"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+    ul.list li b { color: #fff; }
+    
+    .callout { border-left: 3px solid var(--accent2); padding: 14px 16px; background: rgba(251, 191, 36, 0.08); border-radius: 0 12px 12px 0; margin-top: 16px; color: rgba(255,255,255,0.9); font-size: 14px; line-height: 1.6; }
+    .callout.teal { border-color: var(--accent); background: rgba(91, 232, 214, 0.08); }
+    
+    /* Charts */
+    .chart-wrap { padding: 16px; border-radius: 16px; border: 1px solid var(--hairline); background: var(--card2); margin-top: 16px; }
+    .chart-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .chart-title strong { font-size: 15px; color: #fff; }
+    .svg { width: 100%; height: 280px; display: block; }
+    .legend { display: flex; gap: 12px; margin-top: 12px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+    .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+    
+    /* Money Box */
+    .money-box { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: linear-gradient(90deg, rgba(91, 232, 214, 0.1), transparent); border-radius: 16px; border: 1px solid rgba(91, 232, 214, 0.2); margin-top: 16px; }
+    .money-val { font-size: 32px; font-weight: 900; color: var(--accent); font-family: "JetBrains Mono", monospace; }
   </style>
 </head>
 <body>
 
-<div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <h1>NANDA THAI × WEPLACE</h1>
-      <div class="sub">Executive Strategy Roadmap 2026</div>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="dot"></span> NANDA THAI × WEPLACE</div>
+      <div class="nav" id="nav">
+        <a class="pill" href="#hero">비전</a>
+        <a class="pill" href="#data">시장 데이터</a>
+        <a class="pill" href="#strategy">핵심 전략</a>
+        <a class="pill" href="#investment">투자 제안</a>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <main class="stage">
+  <div class="wrap">
     
-    <section class="slide active">
-      <div class="progress-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="badge">VISION 2026</div>
-      <div style="margin-top: 20px;">
-        <p style="font-size: 16px; color: var(--accent-teal); font-weight: 600; margin-bottom: 8px;">
-          명동상권의 대표 매장으로 성장하기 위한,<br>가족의 행복을 도모하는 로드맵입니다.
-        </p>
-        <h2>난다타이아로마<br>성장 시스템 구축</h2>
-        <p class="subtitle">
-          어머니의 안정적인 운영과 아드님의 비전을 결합하여, 명동에서 가장 신뢰받는 랜드마크로 도약하기 위한 디지털 설계를 제안합니다.
-        </p>
-      </div>
-    </section>
-
-    <section class="slide">
-      <div class="progress-dots"><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="badge">CURRENT ACHIEVEMENTS</div>
-      <h3>데이터로 증명된 실력</h3>
-      <div class="grid">
-        <div class="card" style="border-left: 3px solid var(--accent-teal);">
-          <div class="stat-val">1st Page</div>
-          <strong>Naver Place</strong>
-          <p>'명동마사지' 검색 시 첫 페이지 노출. 국내 고객 유입 엔진이 안정화되었습니다.</p>
+    <section class="hero" id="hero">
+      <div class="hgrid">
+        <div>
+          <div class="badge" style="margin-bottom: 12px; display: inline-block;">EXECUTIVE ROADMAP 2026</div>
+          <h1>명동 상권 패권점 도약:<br>네이버의 <span style="color:var(--accent);">안정</span> 위에<br>구글의 <span style="color:var(--accent2);">폭발적 수요</span>를 얹습니다.</h1>
+          <div class="subtitle">
+            단순한 '대행'이 아닙니다. 가족의 비즈니스가 명동의 랜드마크로 대물림될 수 있도록, 글로벌 인바운드 파동을 삼키는 구조적 설계를 제안합니다.
+          </div>
+          <div class="badge-row">
+            <span class="badge" style="border-color:var(--accent2); color:var(--accent2);">현장 넛징 시스템 구축</span>
+            <span class="badge" style="border-color:var(--accent3); color:var(--accent3);">3개월 글로벌 연장 보증</span>
+          </div>
         </div>
-        <div class="card" style="border-left: 3px solid #3B82F6;">
-          <div class="stat-val">No. 1</div>
-          <strong>Google Business</strong>
-          <p>정보 최적화 즉시 구글 맵 1위 등극(26.02 기준). 외국인 관광객 타겟팅 성공.</p>
-        </div>
-        <div class="card" style="border-left: 3px solid var(--accent-gold);">
-          <div class="stat-val">Set-up</div>
-          <strong>Global Asset</strong>
-          <p>Tripadvisor 기초 공사 완료. 전 세계 고객을 맞이할 준비가 끝났습니다.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide">
-      <div class="progress-dots"><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="badge">GROWTH STRATEGY</div>
-      <h3>확장과 리스크 통제</h3>
-      <div class="grid">
-        <div class="card">
-          <strong>현장 넛징 (Scent 시스템)</strong>
-          <p>결제 시 '향기(Scent) 카드'를 건네어, 현장의 감동이 고품질 온라인 리뷰로 자동 전환되게 만듭니다.</p>
-        </div>
-        <div class="card">
-          <strong>당근마켓 초로컬 공략</strong>
-          <p>명동 인근 직장인을 대상으로 한 '힐링 패키지'를 전파하여 로컬 단골층을 두텁게 형성합니다.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide">
-      <div class="progress-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div></div>
-      <div class="badge" style="border-color: var(--accent-gold); color: var(--accent-gold);">INVESTMENT & GUARANTEE</div>
-      <h3>동반 성장을 위한 제안</h3>
-      <p class="subtitle">비용이 아닌 성장을 위한 투자로, 외부 리스크는 WE PLACE가 함께 짊어집니다.</p>
-
-      <div class="grid">
-        <div class="card" style="border-top: 3px solid var(--accent-teal);">
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">정기 관리 시스템 (안정성)</div>
-          <strong>네이버 플레이스 전반 관리 감독</strong>
-          <div class="stat-val">월 500,000<span style="font-size: 14px; color: #fff;">원</span></div>
-          <ul class="check-list">
-            <li>명동 상권 내 노출 방어 및 순위 모니터링</li>
-            <li>향(Scent) 넛징을 통한 리뷰 자산 지속 업데이트</li>
-            <li>시각 데이터 최적화 및 당근마켓 연계 기획</li>
-          </ul>
-        </div>
-
-        <div class="card" style="border-top: 3px solid #3B82F6;">
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">글로벌 확장 및 리스크 방어 (확장성)</div>
-          <strong>구글 및 OTA 마케팅 보증</strong>
-          <div class="stat-val" style="color: #3B82F6;">3개월 무상 연장</div>
-          <ul class="check-list" style="margin-bottom: 8px;">
-            <li>구글 맵 외국인 타겟 노출 극대화 지속 수행</li>
-            <li>KLOOK 등 OTA 상권 포화로 인한 승인 지연 시 보상 적용</li>
-            <li style="color:#cbd5e1;">승인 대기 기간을 <span class="highlight">무료 데이터 체력 비축 기간</span>으로 활용</li>
+        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 16px; border: 1px solid var(--hairline);">
+          <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">최우선 선결 과제</div>
+          <ul class="list">
+            <li>국내 수요(네이버) 유지 및 로직 방어</li>
+            <li>외국인 수요(Google/OTA) 압도적 1위 선점</li>
+            <li>현장의 감동을 온라인 자산(리뷰)으로 치환</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="slide">
-      <div class="progress-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
-      <div style="text-align: center; margin-top: 60px;">
-        <div class="badge">PARTNERSHIP GOAL</div>
-        <h2 style="font-size: 38px; margin-top: 24px;">성공을 넘어,<br><span style="color:var(--accent-teal);">가족의 행복으로</span></h2>
-        <p class="subtitle" style="margin: 0 auto;">
-          WE PLACE는 단순한 대행사가 아닙니다.<br>
-          대표님 가족의 비즈니스가 튼튼한 브랜드로 대물림될 수 있도록, 성장의 연료를 아끼지 않겠습니다.
-        </p>
-        <div style="margin-top: 40px; font-weight: 800; letter-spacing: 1px; color: var(--accent-gold); font-size: 14px;">WE, PLACE YOUR SUCCESS.</div>
+    <section id="data">
+      <div class="grid">
+        <div class="card span-12" style="border-top: 3px solid var(--accent3);">
+          <div class="kicker" style="color:var(--accent3);">Data Evidence</div>
+          <h2>왜 지금 '공격적 글로벌 마케팅'인가?</h2>
+          <div class="subtitle" style="max-width: 800px;">
+            대표님, 명동 마사지 검색량은 빙산의 일각입니다. 아래 구글 트렌드 데이터는 내국인의 "명동 마사지" 검색량 대비 외국인의 영문 검색("korea massage", "seoul spa")이 <b>얼마나 압도적이고 폭발적으로 성장하는지</b> 증명합니다.
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-title">
+              <strong>Google Trends: 마사지/스파 관련 검색어 관심도 변화 (최근 1년, South Korea)</strong>
+              <span style="font-size:12px; color:var(--muted);">데이터 소스: Google Trends (2025-2026)</span>
+            </div>
+            
+            <svg class="svg" id="trendChart"></svg>
+            
+            <div class="legend">
+              <div><span class="swatch" style="background:#4CAF50;"></span>korea massage (폭발적 성장)</div>
+              <div><span class="swatch" style="background:#FFC107;"></span>seoul spa (꾸준한 고수요)</div>
+              <div><span class="swatch" style="background:#F44336;"></span>korean massage</div>
+              <div><span class="swatch" style="background:#2196F3;"></span>아로마 테라피 (내국인 일반)</div>
+              <div><span class="swatch" style="background:#FF9800;"></span><b>명동 마사지 (내국인 지역검색 - 최하위)</b></div>
+            </div>
+          </div>
+
+          <div class="callout">
+            💡 <b>인사이트:</b> "명동 마사지" 키워드로 네이버 1페이지를 장악한 것은 훌륭한 '현상 유지(방어)'입니다. 하지만 매출의 <b>진짜 퀀텀 점프(3파동)</b>를 일으키려면, 트래픽이 쏟아지는 '영문/외국인' 시장인 구글과 글로벌 OTA로 공격적인 투자를 감행해야 합니다.
+          </div>
+        </div>
       </div>
     </section>
 
-  </main>
+    <section id="strategy">
+      <div class="grid">
+        <div class="card span-8">
+          <div class="kicker">Core Strategy</div>
+          <h2>트라이앵글 채널 융합 전략</h2>
+          <div class="grid" style="margin-top:20px; gap: 12px;">
+            <div class="card span-6" style="padding:16px; background:rgba(0,0,0,0.2);">
+              <div style="font-size:14px; font-weight:bold; color:var(--accent); margin-bottom:8px;">[방어] NAVER PLACE</div>
+              <ul class="list" style="font-size:13px;">
+                <li>'명동마사지' 상위권 방어 및 체류시간 개선</li>
+                <li>로컬 단골 및 예약 하방 경직성 확보</li>
+              </ul>
+            </div>
+            <div class="card span-6" style="padding:16px; background:rgba(0,0,0,0.2);">
+              <div style="font-size:14px; font-weight:bold; color:var(--accent2); margin-bottom:8px;">[공격] GOOGLE & OTA</div>
+              <ul class="list" style="font-size:13px;">
+                <li>영어/다국어 세팅으로 인바운드 1순위 노출</li>
+                <li>KLOOK 등 대형 플랫폼 진입을 위한 Proof 축적</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-  <nav class="bottom-nav">
-    <button class="btn" id="prevBtn">← PREV</button>
-    <button class="btn primary" id="nextBtn">NEXT →</button>
-  </nav>
-</div>
+        <div class="card span-4" style="border-top: 3px solid var(--accent);">
+          <div class="kicker">Conversion Engine</div>
+          <h2>현장 넛징 (Scent 시스템)</h2>
+          <div class="subtitle" style="font-size:14px;">오프라인의 감동을 온라인 리뷰 자산으로 바꾸는 구조입니다.</div>
+          <ul class="list">
+            <li><b>1. 최고의 현장 케어</b></li>
+            <li><b>2. 결제 시 20초 넛지 스크립트</b></li>
+            <li><b>3. 향(Scent)이 담긴 리뷰 카드 전달</b></li>
+            <li><b>4. 자발적인 구글/네이버 리뷰 안착</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="investment">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="kicker">The Ask</div>
+          <h2>성공을 확신하기에, WE PLACE가 리스크를 나눕니다.</h2>
+          <div class="subtitle">이 비용은 소모되는 '광고비'가 아니라, 글로벌 명동 상권을 장악하기 위한 '구조적 자산 투자'입니다.</div>
+
+          <div class="grid">
+            <div class="card span-6" style="box-shadow: none;">
+              <div style="color:var(--muted); font-size:14px; font-weight:bold;">[BASE] 네이버 플레이스 전반 관리감독</div>
+              <div class="money-box">
+                <div>
+                  <div style="font-size:14px; color:#fff;">월 고정 투자비용</div>
+                  <div style="font-size:12px; color:var(--muted);">안정적 현금흐름 방어선 구축</div>
+                </div>
+                <div class="money-val">50만<span style="font-size:16px; color:#fff;">원/월</span></div>
+              </div>
+              <ul class="list" style="margin-top:16px;">
+                <li>명동 상권 내 노출 로직 모니터링 및 방어</li>
+                <li>향(Scent) 넛징 시스템 기획 및 현장 디자인물 지원</li>
+                <li>당근마켓 초로컬(직장인) 힐링 패키지 기획(1달간, 설계중)</li>
+              </ul>
+            </div>
+
+            <div class="card span-6" style="box-shadow: none; border-color:var(--accent2);">
+              <div style="color:var(--accent2); font-size:14px; font-weight:bold;">[BOOST] 구글 & 글로벌 OTA 확장 보증</div>
+              <div class="money-box" style="background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3);">
+                <div>
+                  <div style="font-size:14px; color:#fff;">글로벌 마케팅 연장 보증</div>
+                  <div style="font-size:12px; color:var(--muted);">플랫폼 승인 지연 리스크 위플레이스 부담</div>
+                </div>
+                <div class="money-val" style="color:var(--accent2);">+3개월<span style="font-size:16px; color:#fff;"> 무상</span></div>
+              </div>
+              <ul class="list" style="margin-top:16px;">
+                <li>KLOOK 등 상권 포화로 인한 신규 등록 지연 시 적용</li>
+                <li><b>승인 대기 기간을 낭비하지 않고 '무료 데이터 공부/축적 기간'으로 활용</b></li>
+                <li>폭발적인 구글 영문 리뷰 시드 확보에 집중</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout teal" style="text-align: center; margin-top: 24px; font-size: 16px;">
+            "안전하게 네이버로 기둥을 세우고, 3개월 무상 보증을 무기 삼아 저 거대한 구글의 외국인 수요를 거침없이 집어삼킬 때입니다. </br>김태순 대표님의 비즈니스가 명동의 랜드마크가 되도록 WE PLACE가 돕겠습니다."
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  let currentIdx = 0;
-
-  function updateSlides() {
-    slides.forEach((s, i) => {
-      s.classList.toggle('active', i === currentIdx);
-      // Update dots within the active slide
-      const dots = s.querySelectorAll('.dot');
-      dots.forEach((dot, dotIdx) => dot.classList.toggle('active', dotIdx === currentIdx));
+  // 스크롤 연동 내비게이션 활성화
+  const pills = Array.from(document.querySelectorAll('.nav .pill'));
+  const sections = pills.map(p => document.querySelector(p.getAttribute('href')));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(ent => {
+      if (ent.isIntersecting) {
+        const idx = sections.indexOf(ent.target);
+        pills.forEach(p => p.classList.remove('active'));
+        if (idx >= 0) pills[idx].classList.add('active');
+      }
     });
+  }, { threshold: 0.3 });
+  sections.forEach(s => s && io.observe(s));
+
+  // 구글 트렌드 모방 SVG 차트 그리기 로직
+  function drawTrendChart() {
+    const svg = document.getElementById('trendChart');
+    const W = 900, H = 280;
+    const pad = { l: 40, r: 20, t: 20, b: 30 };
     
-    // UI 업데이트
-    prevBtn.style.opacity = currentIdx === 0 ? '0.3' : '1';
-    if (currentIdx === slides.length - 1) {
-      nextBtn.textContent = "FINISH";
-      nextBtn.style.opacity = '0.3';
-    } else {
-      nextBtn.textContent = "NEXT →";
-      nextBtn.style.opacity = '1';
+    // 단순화된 가상 데이터 (제공된 이미지의 굴곡을 모방)
+    const points = 24; // X축 포인트 수
+    const stepX = (W - pad.l - pad.r) / (points - 1);
+    
+    // Y값 계산 헬퍼
+    const getY = (val) => pad.t + (H - pad.t - pad.b) * (1 - (val / 100));
+
+    // 데이터 세트 (0~100 범위)
+    const data = {
+      korea_massage: [20,15,10,30,0,20,10,25,0,20,10,15,40,30,10,20,45,85,75,60,65,95,30,25], // Green (Spiking)
+      seoul_spa: [10,10,25,20,30,18,22,25,20,18,15,15,25,20,35,45,55,50,60,40,45,55,20,15],   // Yellow (Steady High)
+      korean_massage: [10,12,15,12,18,10,20,10,0,15,0,0,15,0,18,35,15,25,25,20,30,15,10,12],   // Red
+      aroma: [15,20,18,15,20,10,15,28,20,25,18,15,30,20,10,22,12,25,18,0,18,0,15,18],          // Blue
+      myeongdong: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]                            // Orange (Flatline near 0)
+    };
+
+    // 곡선 그리기 헬퍼 함수
+    function bezierCmd(arr, color, strokeWidth) {
+      if(arr.length < 2) return '';
+      let d = `M ${pad.l} ${getY(arr[0])}`;
+      for(let i=1; i<arr.length; i++){
+        // 단순 곡선 처리를 위한 제어점
+        const prevX = pad.l + stepX * (i-1);
+        const prevY = getY(arr[i-1]);
+        const currX = pad.l + stepX * i;
+        const currY = getY(arr[i]);
+        const cp1x = prevX + stepX * 0.5;
+        const cp2x = prevX + stepX * 0.5;
+        d += ` C ${cp1x} ${prevY}, ${cp2x} ${currY}, ${currX} ${currY}`;
+      }
+      return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" />`;
     }
+
+    // 배경 그리드
+    let grid = '';
+    [0, 20, 40, 60, 80, 100].forEach(val => {
+      const y = getY(val);
+      grid += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="rgba(255,255,255,0.05)" />`;
+      grid += `<text x="${pad.l - 10}" y="${y + 4}" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="end">${val}</text>`;
+    });
+
+    // X축 텍스트
+    const months = ['April', 'July', 'October', '2026'];
+    const monthSteps = [3, 9, 15, 21]; // 대략적인 위치
+    let xLabels = '';
+    monthSteps.forEach((idx, i) => {
+      const x = pad.l + stepX * idx;
+      xLabels += `<text x="${x}" y="${H - 10}" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">${months[i]}</text>`;
+    });
+
+    svg.innerHTML = `
+      <rect width="100%" height="100%" fill="transparent"/>
+      ${grid}
+      ${bezierCmd(data.myeongdong, '#FF9800', 3)}     ${bezierCmd(data.aroma, '#2196F3', 2)}          ${bezierCmd(data.korean_massage, '#F44336', 2)} ${bezierCmd(data.seoul_spa, '#FFC107', 3)}      ${bezierCmd(data.korea_massage, '#4CAF50', 3)}  ${xLabels}
+    `;
   }
 
-  nextBtn.addEventListener('click', () => {
-    if (currentIdx < slides.length - 1) { currentIdx++; updateSlides(); }
-  });
-
-  prevBtn.addEventListener('click', () => {
-    if (currentIdx > 0) { currentIdx--; updateSlides(); }
-  });
-
-  // 초기화
-  updateSlides();
+  // 화면 크기에 맞게 차트 로드
+  window.onload = drawTrendChart;
+  window.onresize = drawTrendChart;
 </script>
 
 </body>
