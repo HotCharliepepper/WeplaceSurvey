@@ -2,338 +2,734 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <title>NANDA THAI AROMA × WEPLACE | Executive Strategy</title>
+  <title>NANDA THAI AROMA × WEPLACE | Mobile Executive Deck</title>
   <style>
-    /* --- MASHCORE DARK SYSTEM 2.0 --- */
-    :root {
-      --bg: #0b0f19;
-      --card: rgba(15, 23, 42, 0.45);
-      --card2: rgba(30, 41, 59, 0.6);
-      --text: rgba(248, 250, 252, 0.95);
-      --muted: rgba(148, 163, 184, 0.8);
-      --hairline: rgba(255, 255, 255, 0.08);
-      --accent: #5BE8D6; /* Teal */
-      --accent2: #FBBF24; /* Gold */
-      --accent3: #F43F5E; /* Rose */
-      --shadow: 0 18px 60px rgba(0,0,0,.5);
-      --radius: 16px;
-      --max: 1120px;
+    :root{
+      --bg:#0b1220;
+      --panel: rgba(15, 23, 42, .62);
+      --panel2: rgba(15, 23, 42, .78);
+      --line: rgba(255,255,255,.10);
+      --text: rgba(248,250,252,.96);
+      --muted: rgba(148,163,184,.86);
+
+      --teal:#5BE8D6;
+      --gold:#FBBF24;
+      --red:#FB7185;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --r: 18px;
+
+      --font: "Pretendard", -apple-system, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
-    
-    * { box-sizing: border-box; }
-    html, body { height: 100%; scroll-behavior: smooth; }
-    body {
-      margin: 0; font-family: "Pretendard", -apple-system, sans-serif;
-      background: radial-gradient(1000px 800px at 15% 5%, rgba(91, 232, 214, 0.1), transparent 50%),
-                  radial-gradient(800px 600px at 85% 20%, rgba(244, 63, 94, 0.08), transparent 50%),
-                  var(--bg);
-      color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased;
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(950px 700px at 18% 8%, rgba(91,232,214,.14), transparent 55%),
+        radial-gradient(820px 600px at 86% 18%, rgba(251,191,36,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg), #070b14);
+      -webkit-font-smoothing: antialiased;
+      overflow-y:auto;
     }
-    a { color: inherit; text-decoration: none; }
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 20px 16px 80px; }
-    
-    /* Topbar */
-    .topbar {
-      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
-      background: rgba(11, 15, 25, 0.85); border-bottom: 1px solid var(--hairline);
+
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11,18,32,.86);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
     }
-    .topbar-inner {
-      max-width: var(--max); margin: 0 auto; padding: 12px 16px;
-      display: flex; align-items: center; justify-content: space-between;
+    .topbar-inner{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 10px var(--accent2); }
-    .nav { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-    .pill { padding: 6px 12px; border: 1px solid var(--hairline); background: var(--card); border-radius: 99px; font-size: 13px; color: var(--muted); transition: 0.2s; white-space: nowrap;}
-    .pill.active, .pill:hover { border-color: var(--accent); color: var(--text); background: var(--card2); }
-    
-    /* Hero */
-    .hero {
-      margin-top: 20px; padding: 32px; border-radius: 24px; border: 1px solid var(--hairline);
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(15, 23, 42, 0.5));
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+    .mark{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 16px rgba(251,191,36,.55);
+      flex: 0 0 auto;
+    }
+    .brand .t{
+      font-weight: 900;
+      letter-spacing: .3px;
+      font-size: 12.5px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .brand .s{
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .right{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+    .prog{
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,.35);
+      padding: 6px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .toggle{
+      appearance:none;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,.35);
+      color: var(--text);
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 6px 9px;
+      border-radius: 999px;
+      cursor:pointer;
+      white-space: nowrap;
+    }
+
+    .deck{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 14px 92px;
+    }
+
+    .slide{
+      min-height: calc(100vh - 62px);
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,23,42,.72), rgba(15,23,42,.50));
       box-shadow: var(--shadow);
+      padding: 16px;
+      margin: 12px 0;
+      position: relative;
+      overflow: hidden;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .hgrid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 24px; align-items: center; }
-    @media (max-width: 900px) { .hgrid { grid-template-columns: 1fr; } }
-    h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.5px; }
-    .subtitle { font-size: 16px; color: var(--muted); margin-bottom: 16px; }
-    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .badge { font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--hairline); background: rgba(255,255,255,0.05); color: var(--accent); }
-    
-    /* Grid & Cards */
-    section { scroll-margin-top: 80px; margin-top: 24px; }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-    .card { border: 1px solid var(--hairline); background: var(--card); border-radius: 20px; padding: 24px; position: relative; overflow: hidden; }
-    .card h2 { margin: 0 0 12px; font-size: 20px; letter-spacing: -0.3px; color: #fff; }
-    .kicker { font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
-    .span-12 { grid-column: span 12; } .span-8 { grid-column: span 8; } .span-4 { grid-column: span 4; } .span-6 { grid-column: span 6; }
-    @media (max-width: 900px) { .span-8, .span-4, .span-6 { grid-column: span 12; } }
-    
-    ul.list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    ul.list li { position: relative; padding-left: 16px; color: var(--muted); font-size: 15px; }
-    ul.list li::before { content: "›"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
-    ul.list li b { color: #fff; }
-    
-    .callout { border-left: 3px solid var(--accent2); padding: 14px 16px; background: rgba(251, 191, 36, 0.08); border-radius: 0 12px 12px 0; margin-top: 16px; color: rgba(255,255,255,0.9); font-size: 14px; line-height: 1.6; }
-    .callout.teal { border-color: var(--accent); background: rgba(91, 232, 214, 0.08); }
-    
-    /* Charts */
-    .chart-wrap { padding: 16px; border-radius: 16px; border: 1px solid var(--hairline); background: var(--card2); margin-top: 16px; }
-    .chart-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .chart-title strong { font-size: 15px; color: #fff; }
-    .svg { width: 100%; height: 280px; display: block; }
-    .legend { display: flex; gap: 12px; margin-top: 12px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
-    .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
-    
-    /* Money Box */
-    .money-box { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: linear-gradient(90deg, rgba(91, 232, 214, 0.1), transparent); border-radius: 16px; border: 1px solid rgba(91, 232, 214, 0.2); margin-top: 16px; }
-    .money-val { font-size: 32px; font-weight: 900; color: var(--accent); font-family: "JetBrains Mono", monospace; }
+    .slide::before{
+      content:"";
+      position:absolute;
+      inset:-40px -40px auto auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at 30% 30%, rgba(91,232,214,.18), transparent 60%);
+      pointer-events:none;
+      filter: blur(1px);
+      opacity: .85;
+    }
+
+    body.snap .deck{ scroll-snap-type: y mandatory; }
+    body.snap .slide{ scroll-snap-align: start; }
+
+    body.read .deck{ scroll-snap-type: none; }
+    body.read .slide{ min-height: auto; }
+
+    .kicker{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(91,232,214,.95);
+      letter-spacing: .6px;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(22px, 4.2vw, 34px);
+      letter-spacing: -0.6px;
+      line-height: 1.16;
+    }
+    h2{
+      margin:0;
+      font-size: clamp(17px, 3.6vw, 22px);
+      letter-spacing: -0.4px;
+      line-height: 1.22;
+    }
+    p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.55;
+    }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 2px; }
+    .chip{
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: rgba(248,250,252,.92);
+    }
+    .chip.teal{ border-color: rgba(91,232,214,.35); color: var(--teal); background: rgba(91,232,214,.08); }
+    .chip.gold{ border-color: rgba(251,191,36,.35); color: var(--gold); background: rgba(251,191,36,.08); }
+    .chip.red{ border-color: rgba(251,113,133,.35); color: var(--red); background: rgba(251,113,133,.08); }
+
+    .box{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .box .hd{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+      margin-bottom: 8px;
+    }
+    .box .hd strong{
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
+    .box .hd span{
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    ul{
+      margin:0;
+      padding-left: 16px;
+      color: rgba(226,232,240,.92);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    li{ margin: 6px 0; }
+    li b{ color: var(--text); }
+
+    .bluf{
+      border-left: 3px solid var(--gold);
+      background: rgba(251,191,36,.08);
+      padding: 11px 12px;
+      border-radius: 12px;
+      color: rgba(248,250,252,.92);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .rows{ display:flex; flex-direction:column; gap:10px; }
+    .row{
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,42,.32);
+      border-radius: 14px;
+    }
+    .row .l{ font-size: 12.5px; color: rgba(226,232,240,.92); }
+    .row .r{
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--teal);
+      text-align:right;
+    }
+    .row .r small{
+      display:block;
+      font-weight: 700;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    table{
+      width:100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,42,.28);
+      font-size: 12.5px;
+    }
+    th, td{
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align: top;
+    }
+    th{
+      color: rgba(226,232,240,.92);
+      text-align:left;
+      font-size: 12px;
+      letter-spacing: .2px;
+      background: rgba(0,0,0,.18);
+    }
+    tr:last-child td{ border-bottom:none; }
+
+    .hint{
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+
+    .chart{
+      height: 120px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)),
+        radial-gradient(260px 160px at 25% 35%, rgba(91,232,214,.15), transparent 60%),
+        radial-gradient(260px 160px at 80% 65%, rgba(251,191,36,.12), transparent 60%),
+        rgba(0,0,0,.20);
+      position: relative;
+      overflow:hidden;
+    }
+    .chart svg{ width:100%; height:100%; display:block; }
+    .tag{
+      position:absolute;
+      left: 10px; top: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(251,191,36,.28);
+      background: rgba(251,191,36,.10);
+      color: var(--gold);
+    }
+
+    .fab{
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      display:flex;
+      gap: 10px;
+      z-index: 80;
+    }
+    .fab button{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(15,23,42,.82);
+      color: rgba(248,250,252,.95);
+      padding: 11px 12px;
+      border-radius: 16px;
+      font-weight: 900;
+      font-size: 12px;
+      cursor:pointer;
+      backdrop-filter: blur(10px);
+    }
+    .fab button:active{ transform: translateY(1px); }
+    .fab button.secondary{
+      background: rgba(15,23,42,.55);
+      color: rgba(226,232,240,.92);
+      font-weight: 800;
+    }
+
+    @media (min-width: 900px){
+      .slide{ padding: 22px; }
+      p{ font-size: 15px; }
+      ul{ font-size: 14px; }
+      .chart{ height: 150px; }
+    }
   </style>
 </head>
-<body>
+<body class="snap">
 
   <div class="topbar">
     <div class="topbar-inner">
-      <div class="brand"><span class="dot"></span> NANDA THAI × WEPLACE</div>
-      <div class="nav" id="nav">
-        <a class="pill" href="#hero">비전</a>
-        <a class="pill" href="#data">시장 데이터</a>
-        <a class="pill" href="#strategy">핵심 전략</a>
-        <a class="pill" href="#investment">투자 제안</a>
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div style="min-width:0;">
+          <div class="t">NANDA THAI AROMA × WEPLACE · Executive Deck</div>
+          <div class="s">UPDATED: 2026-02-23 · 목적: 내부 승인 → 계약</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="prog" id="prog">01 / 09</div>
+        <button class="toggle" id="modeBtn" type="button">READ MODE</button>
       </div>
     </div>
   </div>
 
-  <div class="wrap">
-    
-    <section class="hero" id="hero">
-      <div class="hgrid">
-        <div>
-          <div class="badge" style="margin-bottom: 12px; display: inline-block;">EXECUTIVE ROADMAP 2026</div>
-          <h1>명동 상권 패권점 도약:<br>네이버의 <span style="color:var(--accent);">안정</span> 위에<br>구글의 <span style="color:var(--accent2);">폭발적 수요</span>를<br> 얹습니다.</h1>
-          <div class="subtitle">
-            단순한 '대행'이 아닙니다. <br> '김태순 대표님의 공간'이 명동의 랜드마크가 되도록, 글로벌 인바운드 파동을 삼키는 구조적 설계를 제안합니다.
-          </div>
-          <div class="badge-row">
-            <span class="badge" style="border-color:var(--accent2); color:var(--accent2);">현장 넛징 시스템 구축</span>
-            <span class="badge" style="border-color:var(--accent3); color:var(--accent3);">3개월 글로벌 연장 보증</span>
-          </div>
+  <main class="deck" id="deck">
+
+    <section class="slide" data-title="BLUF">
+      <div class="kicker">EXECUTIVE SUMMARY</div>
+      <h1>네이버로 방어하고,<br/>구글로 확장합니다.</h1>
+      <p>
+        본 문서는 난다아로마가 <b style="color:var(--text)">명동 상권에서 “예약 하방 경직성”</b>을 만들고,
+        동시에 <b style="color:var(--text)">외국인·지도 기반 수요(구글)</b>를 구조적으로 흡수하기 위한 실행 제안서입니다.
+      </p>
+
+      <div class="chips">
+        <span class="chip teal">NAVER: 순위 방어/동태 파악</span>
+        <span class="chip gold">GOOGLE: 성장 엔진 구축</span>
+        <span class="chip red">OTA: 승인 변수 리스크</span>
+      </div>
+
+      <div class="bluf">
+        <b>결론(BLUF):</b> 네이버는 “안정적 방어”로 유지하고, 구글은 “리뷰·사진·Q&A·포스트”를 운영 장치로 만들어
+        외국인 유입을 키웁니다. OTA 승인 지연 등 외부 변수는 <b>구글 운영 3개월 무상 연장</b>으로 흡수합니다.
+      </div>
+
+      <div class="hint">읽는 시간: 약 7분 · (기본은 슬라이드 스냅 / 상단 버튼으로 읽기 모드 전환)</div>
+    </section>
+
+    <section class="slide" data-title="Snapshot">
+      <div class="kicker">CURRENT STATUS</div>
+      <h2>현재 성과 스냅샷 (2026-02-23 기준)</h2>
+      <p>내부 승인용으로 “지금 어디까지 왔는지”를 한 화면에 정리합니다.</p>
+
+      <div class="rows" style="margin-top: 6px;">
+        <div class="row">
+          <div class="l"><b>네이버플레이스</b> · ‘명동마사지’</div>
+          <div class="r">1st PAGE<small>상시 유지(지속 관측)</small></div>
         </div>
-        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 16px; border: 1px solid var(--hairline);">
-          <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">최우선 선결 과제</div>
-          <ul class="list">
-            <li>국내 수요(네이버) 유지 및 로직 방어</li>
-            <li>외국인 수요(Google/OTA) 압도적 1위 선점</li>
-            <li>현장의 감동을 온라인 자산(리뷰)으로 치환</li>
-          </ul>
+        <div class="row">
+          <div class="l"><b>구글 비즈니스(GBP)</b> · ‘명동마사지’</div>
+          <div class="r">No. 1<small>2026-02-23 확인</small></div>
         </div>
+        <div class="row">
+          <div class="l"><b>Tripadvisor</b></div>
+          <div class="r">SET-UP<small>사진/키워드 세팅 진행</small></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="hd">
+          <strong>이 단계의 의미</strong>
+          <span>Why it matters</span>
+        </div>
+        <ul>
+          <li><b>네이버 1페이지 유지</b>는 “방어선” 확보입니다.</li>
+          <li><b>구글 1위 노출</b>은 “성장 엔진 점화 가능성” 신호입니다(초기 변동성 존재).</li>
+          <li>다음 30~90일은 <b>리뷰·사진·정보 자산</b>을 쌓아 변동에도 예약이 유지되게 만듭니다.</li>
+        </ul>
+      </div>
+
+      <div class="hint">캡처 증빙(네이버/구글)은 최종 제출본에 이미지로 삽입 권장</div>
+    </section>
+
+    <section class="slide" data-title="Strategy">
+      <div class="kicker">CHANNEL STRATEGY</div>
+      <h2>채널 역할 분리 (방어 × 성장 × 교두보)</h2>
+      <p>각 채널은 다른 고객을 데려옵니다. 역할을 분리해 “관리 가능한 게임”으로 만듭니다.</p>
+
+      <table style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th style="width:26%;">채널</th>
+            <th>역할</th>
+            <th style="width:28%;">핵심 지표</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b style="color:var(--teal);">NAVER</b></td>
+            <td>순위 방어 + 동태 파악(조기 경보) + 콘텐츠 미세 보정</td>
+            <td>1페이지 유지, 저장/문의/예약, 리뷰 증가</td>
+          </tr>
+          <tr>
+            <td><b style="color:var(--gold);">GOOGLE</b></td>
+            <td>외국인·지도 기반 유입 엔진 구축(리뷰·사진·Q&A·포스트)</td>
+            <td>길찾기/전화/웹클릭, 리뷰/응답률, 검색어</td>
+          </tr>
+          <tr>
+            <td><b style="color:var(--red);">TA/OTA</b></td>
+            <td>검증 플랫폼 ‘증거’ 축적 + 확장용 제출물 표준화</td>
+            <td>조회/리뷰 시드, 사진/문구 완성도</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="bluf" style="border-left-color: var(--teal); background: rgba(91,232,214,.08);">
+        <b>원칙:</b> 네이버는 “방어가 돈”, 구글은 “축적 속도가 돈”, OTA는 “승인 변수 관리”가 핵심입니다.
       </div>
     </section>
 
-    <section id="data">
-      <div class="grid">
-        <div class="card span-12" style="border-top: 3px solid var(--accent3);">
-          <div class="kicker" style="color:var(--accent3);">Data Evidence</div>
-          <h2>왜 지금 '공격적 글로벌 마케팅'인가?</h2>
-          <div class="subtitle" style="max-width: 800px;">
-            대표님, 명동 마사지 검색량은 빙산의 일각입니다. 아래 구글 트렌드 데이터는 내국인의 </br>"명동 마사지" 검색량 대비 외국인의 영문 검색<br>("korea massage", "seoul spa")이 <br> <b>얼마나 압도적이고 </b></br><b>폭발적으로 성장하는지</b> 증명합니다.
-          </div>
+    <section class="slide" data-title="Risk">
+      <div class="kicker">RISK CONTROL</div>
+      <h2>통제 가능 / 외부 변수 분리</h2>
+      <p>내부 승인 단계에서는 “통제 가능한 실행”과 “외부 변수”를 분리하는 게 핵심입니다.</p>
 
-          <div class="chart-wrap">
-            <div class="chart-title">
-              <strong>Google Trends: 마사지/스파 관련 검색어 관심도 변화</br> (최근 1년, South Korea)</strong>
-              <span style="font-size:12px; color:var(--muted);">데이터 소스: Google Trends (2025-2026)</span>
-            </div>
-            
-            <svg class="svg" id="trendChart"></svg>
-            
-            <div class="legend">
-              <div><span class="swatch" style="background:#4CAF50;"></span>korea massage (폭발적 성장)</div>
-              <div><span class="swatch" style="background:#FFC107;"></span>seoul spa (꾸준한 고수요)</div>
-              <div><span class="swatch" style="background:#F44336;"></span>korean massage</div>
-              <div><span class="swatch" style="background:#2196F3;"></span>아로마 테라피 (내국인 일반)</div>
-              <div><span class="swatch" style="background:#FF9800;"></span><b>명동 마사지 (내국인 지역검색 - 최하위)</b></div>
-            </div>
-          </div>
+      <table style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>내용</th>
+            <th style="width:34%;">대응</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>통제 가능</b></td>
+            <td>사진 품질/수량, 리뷰 증가 속도, 응답률, Q&A/포스트 루틴</td>
+            <td>주간 운영 루틴 고정 + 현장 넛지(리뷰 카드) 설계</td>
+          </tr>
+          <tr>
+            <td><b>외부 변수</b></td>
+            <td>OTA(클룩 등) 정책/수수료 구조로 신규 입점 지연/거부 가능</td>
+            <td><b style="color:var(--gold);">구글 운영 3개월 무상 연장</b>으로 안정화 기간 확보</td>
+          </tr>
+        </tbody>
+      </table>
 
-          <div class="callout">
-            💡 <b>인사이트:</b> "명동 마사지" 키워드로 네이버 </br>1페이지 안착은 훌륭한 '현상 유지(방어)'입니다. </br>하지만 매출의 <b>진짜 퀀텀 점프(3파동)</b>를 일으키려면, 트래픽이 쏟아지는 '영문/외국인' 시장인 구글과 글로벌 OTA로 공격적인 투자를 감행해야 합니다.
-          </div>
-        </div>
+      <div class="box">
+        <div class="hd"><strong>핵심 논리</strong><span>Approval-friendly</span></div>
+        <ul>
+          <li>OTA 지연이 생겨도 “대기”가 아니라 <b>구글 엔진 강화 기간</b>으로 전환합니다.</li>
+          <li>즉, 외부 변수는 매출 리스크가 아니라 <b>데이터 축적 시간</b>이 됩니다.</li>
+        </ul>
       </div>
     </section>
 
-    <section id="strategy">
-      <div class="grid">
-        <div class="card span-8">
-          <div class="kicker">Core Strategy</div>
-          <h2>트라이앵글 채널 융합 전략</h2>
-          <div class="grid" style="margin-top:20px; gap: 12px;">
-            <div class="card span-6" style="padding:16px; background:rgba(0,0,0,0.2);">
-              <div style="font-size:14px; font-weight:bold; color:var(--accent); margin-bottom:8px;">[방어] NAVER PLACE</div>
-              <ul class="list" style="font-size:13px;">
-                <li>'명동마사지' 상위권 방어 및 체류시간 개선</li>
-                <li>로컬 단골 및 예약 하방 경직성 확보</li>
-              </ul>
-            </div>
-            <div class="card span-6" style="padding:16px; background:rgba(0,0,0,0.2);">
-              <div style="font-size:14px; font-weight:bold; color:var(--accent2); margin-bottom:8px;">[공격] GOOGLE & OTA</div>
-              <ul class="list" style="font-size:13px;">
-                <li>영어/다국어 세팅으로 인바운드 1순위 노출</li>
-                <li>KLOOK 등 대형 플랫폼 진입을 위한 증거 축적</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+    <section class="slide" data-title="Roadmap">
+      <div class="kicker">90-DAY PLAN</div>
+      <h2>로드맵 (30 / 60 / 90일)</h2>
+      <p>“크게 한 번”이 아니라 “작게 자주” 보정하는 방식으로 운영합니다.</p>
 
-        <div class="card span-4" style="border-top: 3px solid var(--accent);">
-          <div class="kicker">Conversion Engine</div>
-          <h2>현장 넛징 (Scent 시스템)</h2>
-          <div class="subtitle" style="font-size:14px;">현장의 감동을 온라인 리뷰 자산으로 바꾸는 구조입니다.</div>
-          <ul class="list">
-            <li><b>1. 최고의 현장 케어</b></li>
-            <li><b>2. 결제 시 20초 넛지 스크립트</b></li>
-            <li><b>3. 향(Scent)이 담긴 리뷰 카드 전달</b></li>
-            <li><b>4. 자발적인 구글/네이버 리뷰 안착</b></li>
-          </ul>
-        </div>
+      <div class="box">
+        <div class="hd"><strong>D+30</strong><span>Foundation</span></div>
+        <ul>
+          <li>네이버: 주간 동태 파악 항목 확정 + 대표 콘텐츠 1회 보정</li>
+          <li>구글: Q&A 5개 + 첫 포스트 + 리뷰 응답 템플릿 적용</li>
+          <li>Tripadvisor: 대표 사진 셋 + EN 소개/키워드 1차</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <div class="hd"><strong>D+60</strong><span>Conversion</span></div>
+        <ul>
+          <li>리뷰 증가 속도/응답률 안정화(구글 중심)</li>
+          <li>사진 확장: “외국인 신뢰 포인트”(공간/청결/동선) 중심</li>
+          <li>월간 리포트: 변동/조치/결과 1페이지 고정</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <div class="hd"><strong>D+90</strong><span>Scale-ready</span></div>
+        <ul>
+          <li>OTA 제출물 표준화(사진/문구/패키지/정책)</li>
+          <li>“검색→지도→신뢰→예약” 퍼널 유지</li>
+        </ul>
       </div>
     </section>
 
-    <section id="investment">
-      <div class="grid">
-        <div class="card span-12">
-          <div class="kicker">The Ask</div>
-          <h2>성공을 확신하기에, WE PLACE가 </br> 리스크를 나눕니다.</h2>
-          <div class="subtitle">이 비용은 소모되는 '광고비'가 아니라, 글로벌 명동 상권을 장악하기 위한 '구조적 자산 투자'입니다.</div>
+    <section class="slide" data-title="Scope">
+      <div class="kicker">WEPLACE SCOPE</div>
+      <h2>운영 범위 (월간 기준)</h2>
+      <p>임원 관점에서 “무엇을 꾸준히 하는지”가 가장 중요합니다.</p>
 
-          <div class="grid">
-            <div class="card span-6" style="box-shadow: none;">
-              <div style="color:var(--muted); font-size:14px; font-weight:bold;">[BASE] 네이버 플레이스 전반 관리감독</div>
-              <div class="money-box">
-                <div>
-                  <div style="font-size:14px; color:#fff;">월 고정 투자비용</div>
-                  <div style="font-size:12px; color:var(--muted);">안정적 현금흐름 방어선 구축</div>
-                </div>
-                <div class="money-val">50만<span style="font-size:16px; color:#fff;">원/월</span></div>
-              </div>
-              <ul class="list" style="margin-top:16px;">
-                <li>명동 상권 내 노출 로직 모니터링 및 방어</li>
-                <li>향(Scent) 넛징 시스템 기획 및 현장 디자인물 지원</li>
-                <li>당근마켓 초로컬(직장인) 힐링 패키지 기획</li>
-              </ul>
-            </div>
+      <div class="box">
+        <div class="hd"><strong style="color:var(--teal);">NAVER 운영</strong><span>Defense</span></div>
+        <ul>
+          <li>주간 모니터링: 키워드/노출 변동, 경쟁 동향, 리뷰 흐름</li>
+          <li>격주 보정: 대표 사진/문구/구성(이탈 포인트 제거)</li>
+          <li>이슈 대응: 급변 시 원인 가설 → 조치 → 재측정</li>
+        </ul>
+      </div>
 
-            <div class="card span-6" style="box-shadow: none; border-color:var(--accent2);">
-              <div style="color:var(--accent2); font-size:14px; font-weight:bold;">[BOOST] 구글 & 글로벌 OTA 확장 보증</div>
-              <div class="money-box" style="background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3);">
-                <div>
-                  <div style="font-size:14px; color:#fff;">글로벌 마케팅 연장 보증</div>
-                  <div style="font-size:12px; color:var(--muted);">플랫폼 승인 지연 리스크 위플레이스 부담</div>
-                </div>
-                <div class="money-val" style="color:var(--accent2);">+3개월<span style="font-size:16px; color:#fff;"> 무상</span></div>
-              </div>
-              <ul class="list" style="margin-top:16px;">
-                <li>KLOOK 등 상권 포화로 인한 신규 등록 지연 시 적용</li>
-                <li><b>승인 대기 기간을 낭비하지 않고 '무료 데이터 공부/축적 기간'으로 활용</b></li>
-                <li>폭발적인 구글 영문 리뷰 시드 확보에 집중</li>
-              </ul>
-            </div>
-          </div>
+      <div class="box">
+        <div class="hd"><strong style="color:var(--gold);">GOOGLE(GBP) 운영</strong><span>Growth</span></div>
+        <ul>
+          <li>프로필 강화: 서비스/설명(필요 시 EN 최소 버전)</li>
+          <li>Q&A 시드 5개 선점 + 주간 보강</li>
+          <li>포스트 루틴: 주간 업데이트(신선도 신호)</li>
+          <li>리뷰 운영: 응답 템플릿 + 현장 전환 장치(리뷰 카드)</li>
+        </ul>
+      </div>
 
-          <div class="callout teal" style="text-align: center; margin-top: 24px; font-size: 16px;">
-            "안전하게 네이버로 기둥을 세우고, 3개월 무상 보증을 무기 삼아 저 거대한 구글의 외국인 수요를 거침없이 집어삼킬 때입니다. 가족의 비즈니스가 랜드마크가 되도록 WE PLACE가 돕겠습니다."
-          </div>
-        </div>
+      <div class="hint">* “현장 넛지 시스템(향 카드)”은 리뷰를 ‘요청’이 아닌 ‘설계’로 전환합니다.</div>
+    </section>
+
+    <section class="slide" data-title="KPI">
+      <div class="kicker">KPI & MEASUREMENT</div>
+      <h2>KPI는 “예측”이 아니라 “측정 루틴”입니다</h2>
+      <p>아래 방식대로 데이터를 확보하면 승인 이후 바로 월간 리포트로 연결됩니다.</p>
+
+      <div class="box">
+        <div class="hd"><strong>구글(GBP) 루틴</strong><span>Weekly</span></div>
+        <ul>
+          <li>GBP 실적: <b>검색어(queries)</b>, <b>길찾기/전화/웹클릭</b>, <b>프로필/사진 조회</b></li>
+          <li>리뷰: <b>증가량</b>, <b>평점</b>, <b>응답률</b></li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <div class="hd"><strong>네이버 루틴</strong><span>Weekly</span></div>
+        <ul>
+          <li>키워드 1페이지 유지 + 경쟁 동향(리뷰/사진/노출 변화)</li>
+          <li>저장/문의/예약 흐름 점검(이탈 포인트)</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <div class="hd"><strong>입력칸(대표님이 채워주시면 덱에 삽입)</strong><span>Fill-in</span></div>
+        <ul>
+          <li>최근 30일 구글: 길찾기 __ / 전화 __ / 웹클릭 __</li>
+          <li>최근 30일 구글: 리뷰 +__건 / 응답률 __%</li>
+          <li>네이버: 저장 __ / 문의 __ / 예약 __</li>
+        </ul>
+      </div>
+
+      <div class="hint">* 차트/트렌드는 “컨셉”으로 표기하고, 근거는 캡처로 첨부합니다.</div>
+    </section>
+
+    <section class="slide" data-title="Concept">
+      <div class="kicker">VISUAL EXPLAINER</div>
+      <h2>컨셉 차트: 수요의 방향(설명용)</h2>
+      <p>실측 그래프가 아니라, “왜 구글/영문 시장을 병행해야 하는지”를 설명하는 도식입니다.</p>
+
+      <div class="chart" aria-label="concept chart">
+        <div class="tag">CONCEPT ONLY</div>
+        <svg viewBox="0 0 1000 260" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="rgba(91,232,214,.85)"/>
+              <stop offset="1" stop-color="rgba(91,232,214,.15)"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" x2="1">
+              <stop offset="0" stop-color="rgba(251,191,36,.85)"/>
+              <stop offset="1" stop-color="rgba(251,191,36,.15)"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="260" fill="transparent"/>
+          <g stroke="rgba(255,255,255,.08)" stroke-width="1">
+            <line x1="70" y1="40" x2="980" y2="40"/>
+            <line x1="70" y1="95" x2="980" y2="95"/>
+            <line x1="70" y1="150" x2="980" y2="150"/>
+            <line x1="70" y1="205" x2="980" y2="205"/>
+            <line x1="70" y1="240" x2="980" y2="240"/>
+            <line x1="70" y1="20" x2="70" y2="240"/>
+          </g>
+          <g fill="rgba(255,255,255,.55)" font-size="26" font-family="ui-monospace, SFMono-Regular, Menlo">
+            <text x="80" y="34">Low</text>
+            <text x="860" y="34">High</text>
+          </g>
+          <path d="M70,185 C220,170 330,175 460,160 C610,140 760,150 980,135" fill="none" stroke="url(#g1)" stroke-width="6"/>
+          <path d="M70,200 C240,200 360,190 480,170 C650,140 780,90 980,55" fill="none" stroke="url(#g2)" stroke-width="7"/>
+          <g fill="rgba(226,232,240,.85)" font-size="24" font-family="Pretendard, sans-serif">
+            <text x="86" y="230">TIME →</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="box">
+        <div class="hd"><strong>한 줄 요약</strong><span>Takeaway</span></div>
+        <ul>
+          <li>네이버는 <b>안정(방어선)</b>, 구글은 <b>확장(외국인 수요 흡수)</b>입니다.</li>
+        </ul>
       </div>
     </section>
 
+    <section class="slide" data-title="Ask">
+      <div class="kicker">THE ASK</div>
+      <h2>금액 & 조건 (내부 승인용)</h2>
+      <p>광고비가 아니라, “구조적 자산(리뷰·사진·정보)”을 쌓는 운영 비용입니다.</p>
+
+      <div class="rows" style="margin-top: 6px;">
+        <div class="row">
+          <div class="l"><b>네이버 운영</b> (방어/동태 파악)</div>
+          <div class="r">월 50만원대<small>순위 방어 + 루틴 운영</small></div>
+        </div>
+        <div class="row">
+          <div class="l"><b>구글 운영</b> (성장 장치)</div>
+          <div class="r">+3개월 무상<small>OTA 변수 리스크 흡수</small></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="hd"><strong>다음 단계</strong><span>Contract Path</span></div>
+        <ul>
+          <li>내부 승인 완료 → 운영 시작(주간 루틴 고정)</li>
+          <li>대표님 제공: 네이버/구글 캡처 + 가능한 지표(최근 30일)</li>
+          <li>WEPLACE 제공: 월간 1페이지 리포트 템플릿 + 개선 로그</li>
+        </ul>
+      </div>
+
+      <div class="bluf">
+        <b>승인 포인트:</b> “통제 가능한 실행”에 집중하고, 외부 변수(OTA)는 무상 연장으로 흡수하여
+        승인 후 즉시 실행 가능한 구조로 설계했습니다.
+      </div>
+    </section>
+
+  </main>
+
+  <div class="fab" aria-label="actions">
+    <button class="secondary" type="button" id="toTop">상단</button>
+    <button type="button" id="next">다음</button>
   </div>
 
-<script>
-  // 스크롤 연동 내비게이션 활성화
-  const pills = Array.from(document.querySelectorAll('.nav .pill'));
-  const sections = pills.map(p => document.querySelector(p.getAttribute('href')));
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(ent => {
-      if (ent.isIntersecting) {
-        const idx = sections.indexOf(ent.target);
-        pills.forEach(p => p.classList.remove('active'));
-        if (idx >= 0) pills[idx].classList.add('active');
+  <script>
+    (function(){
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const prog = document.getElementById('prog');
+      const modeBtn = document.getElementById('modeBtn');
+      const toTop = document.getElementById('toTop');
+      const nextBtn = document.getElementById('next');
+
+      function setProg(i){
+        const n = slides.length;
+        const a = String(i+1).padStart(2,'0');
+        const b = String(n).padStart(2,'0');
+        prog.textContent = `${a} / ${b}`;
       }
-    });
-  }, { threshold: 0.3 });
-  sections.forEach(s => s && io.observe(s));
 
-  // 구글 트렌드 모방 SVG 차트 그리기 로직
-  function drawTrendChart() {
-    const svg = document.getElementById('trendChart');
-    const W = 900, H = 280;
-    const pad = { l: 40, r: 20, t: 20, b: 30 };
-    
-    // 단순화된 가상 데이터 (제공된 이미지의 굴곡을 모방)
-    const points = 24; // X축 포인트 수
-    const stepX = (W - pad.l - pad.r) / (points - 1);
-    
-    // Y값 계산 헬퍼
-    const getY = (val) => pad.t + (H - pad.t - pad.b) * (1 - (val / 100));
+      const io = new IntersectionObserver((entries)=>{
+        let best = null;
+        for (const e of entries){
+          if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+        }
+        if (best && best.isIntersecting){
+          const idx = slides.indexOf(best.target);
+          if (idx >= 0) setProg(idx);
+        }
+      }, { threshold: [0.25, 0.4, 0.55, 0.7] });
 
-    // 데이터 세트 (0~100 범위)
-    const data = {
-      korea_massage: [20,15,10,30,0,20,10,25,0,20,10,15,40,30,10,20,45,85,75,60,65,95,30,25], // Green (Spiking)
-      seoul_spa: [10,10,25,20,30,18,22,25,20,18,15,15,25,20,35,45,55,50,60,40,45,55,20,15],   // Yellow (Steady High)
-      korean_massage: [10,12,15,12,18,10,20,10,0,15,0,0,15,0,18,35,15,25,25,20,30,15,10,12],   // Red
-      aroma: [15,20,18,15,20,10,15,28,20,25,18,15,30,20,10,22,12,25,18,0,18,0,15,18],          // Blue
-      myeongdong: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]                            // Orange (Flatline near 0)
-    };
+      slides.forEach(s => io.observe(s));
+      setProg(0);
 
-    // 곡선 그리기 헬퍼 함수
-    function bezierCmd(arr, color, strokeWidth) {
-      if(arr.length < 2) return '';
-      let d = `M ${pad.l} ${getY(arr[0])}`;
-      for(let i=1; i<arr.length; i++){
-        // 단순 곡선 처리를 위한 제어점
-        const prevX = pad.l + stepX * (i-1);
-        const prevY = getY(arr[i-1]);
-        const currX = pad.l + stepX * i;
-        const currY = getY(arr[i]);
-        const cp1x = prevX + stepX * 0.5;
-        const cp2x = prevX + stepX * 0.5;
-        d += ` C ${cp1x} ${prevY}, ${cp2x} ${currY}, ${currX} ${currY}`;
+      function setMode(mode){
+        document.body.classList.remove('snap','read');
+        document.body.classList.add(mode);
+        modeBtn.textContent = mode === 'snap' ? 'READ MODE' : 'SNAP MODE';
+        localStorage.setItem('nanda_mode', mode);
       }
-      return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" />`;
-    }
+      const saved = localStorage.getItem('nanda_mode');
+      setMode(saved === 'read' ? 'read' : 'snap');
 
-    // 배경 그리드
-    let grid = '';
-    [0, 20, 40, 60, 80, 100].forEach(val => {
-      const y = getY(val);
-      grid += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" stroke="rgba(255,255,255,0.05)" />`;
-      grid += `<text x="${pad.l - 10}" y="${y + 4}" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="end">${val}</text>`;
-    });
+      modeBtn.addEventListener('click', ()=>{
+        const isSnap = document.body.classList.contains('snap');
+        setMode(isSnap ? 'read' : 'snap');
+      });
 
-    // X축 텍스트
-    const months = ['April', 'July', 'October', '2026'];
-    const monthSteps = [3, 9, 15, 21]; // 대략적인 위치
-    let xLabels = '';
-    monthSteps.forEach((idx, i) => {
-      const x = pad.l + stepX * idx;
-      xLabels += `<text x="${x}" y="${H - 10}" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="middle">${months[i]}</text>`;
-    });
+      toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
 
-    svg.innerHTML = `
-      <rect width="100%" height="100%" fill="transparent"/>
-      ${grid}
-      ${bezierCmd(data.myeongdong, '#FF9800', 3)}     ${bezierCmd(data.aroma, '#2196F3', 2)}          ${bezierCmd(data.korean_massage, '#F44336', 2)} ${bezierCmd(data.seoul_spa, '#FFC107', 3)}      ${bezierCmd(data.korea_massage, '#4CAF50', 3)}  ${xLabels}
-    `;
-  }
-
-  // 화면 크기에 맞게 차트 로드
-  window.onload = drawTrendChart;
-  window.onresize = drawTrendChart;
-</script>
-
+      function scrollToNext(){
+        const y = window.scrollY;
+        let cur = 0;
+        for (let i=0;i<slides.length;i++){
+          const top = slides[i].getBoundingClientRect().top + window.scrollY;
+          if (top <= y + 10) cur = i;
+        }
+        const nxt = Math.min(cur+1, slides.length-1);
+        slides[nxt].scrollIntoView({behavior:'smooth', block:'start'});
+      }
+      nextBtn.addEventListener('click', scrollToNext);
+    })();
+  </script>
 </body>
 </html>
